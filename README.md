@@ -3,6 +3,8 @@
 ## Introduction
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=master)](https://coveralls.io/github/d-kahara/store_manager_api?branch=master)
+[![Build Status](https://travis-ci.org/d-kahara/store_manager_api.svg?branch=master)](https://travis-ci.org/d-kahara/store_manager_api)
+[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/d-kahara/store_manager_api)
 
 ### Features
 
@@ -41,10 +43,28 @@ Install project dependencies
 
 #### Running the application
 
-```$ python run.py```
+```$ python run.py run```
 
 
 
 #### Testing
 
-```$ nosetests app/tests```
+```$  python run.py test```
+
+
+
+### API-Endpoints
+
+#### Product Endpoints : /api/v1/
+
+Method | Endpoint | Functionality
+--- | --- | ---
+POST | products | Post a product
+GET | /products | Get a List of all products
+GET | /products/int:product_id | Get a product using its id
+
+#### Sales Endpoints : /api/v1
+POST | sales | Post a sale
+GET | /sales | Get a List of all sales
+GET | /sales/int:sale_id | Get a sale using its id
+
