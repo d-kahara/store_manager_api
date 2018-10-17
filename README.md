@@ -2,6 +2,7 @@
 
 ## Introduction
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=master)](https://coveralls.io/github/d-kahara/store_manager_api?branch=master)
 
 ### Features
 

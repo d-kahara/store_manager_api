@@ -1,0 +1,26 @@
+
+language: python
+env:
+
+python:
+  - "3.5"
+
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls codecov
+
+services:
+  
+addons:
+  
+
+before_script:
+ - coveralls
+
+
+
+script:
+  - nosetests --with-coverage --cover-package=app app/tests
+
+after-success:
+  - coveralls
