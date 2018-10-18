@@ -2,7 +2,7 @@
 
 ## Introduction
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=master)](https://coveralls.io/github/d-kahara/store_manager_api?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=bg-travis-set-up-161308445)](https://coveralls.io/github/d-kahara/store_manager_api?branch=bg-travis-set-up-161308445)
 [![Build Status](https://travis-ci.org/d-kahara/store_manager_api.svg?branch=master)](https://travis-ci.org/d-kahara/store_manager_api)
 [![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/d-kahara/store_manager_api)
 
