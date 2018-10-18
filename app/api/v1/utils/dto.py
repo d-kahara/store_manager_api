@@ -17,6 +17,26 @@ class productDto():
         'stock': fields.Integer(description='Products stock'),
         'min_q': fields.Integer(description='Minimum Inventory Quantity Allowed'),
         'category': fields.String(description='Category of product'),
-        'product_id': fields.Integer(description='Unique Identification'),
-        'created_at': fields.DateTime(descriprion='Date created', dt_format='rfc822'),
+        'product_id': fields.Integer(description='Unique Identification for products'),
+        'created_at': fields.String(descriprion='Date created'),
+    })
+
+
+class SalesDto():
+    sales_ns = Namespace(
+        'Sales', description='Operations related to the Sales ')
+
+    sales_mod = sales_ns.model('sales model', {
+        'cart_id': fields.Integer(description='The cart where sale is being checked out from '),
+        'posted_by': fields.String(description='The store attendant posting the sale'),
+        'cart_total': fields.Integer(description='Total worth of goods bought'),
+
+    })
+
+    sales_resp = sales_ns.model('Expected response for get methods on sales', {
+        'sale_id': fields.Integer(description='Unique Identification for sales'),
+        'cart_id': fields.Integer(description='The cart where sale is being checked out from '),
+        'posted_by': fields.String(description='The store attendant posting the sale'),
+        'cart_total': fields.Integer(description='Total worth of goods bought'),
+        'created_at': fields.String(descriprion='Date created'),
     })
