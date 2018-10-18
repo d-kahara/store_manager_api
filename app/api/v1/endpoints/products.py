@@ -5,13 +5,14 @@ from flask_restplus import Resource
 from flask import request, jsonify
 from werkzeug.exceptions import NotFound
 
-#local imports
+# local imports
 from ..utils.dto import productDto
 from ..models.product_model import ProductModel
+from ....data import Data
+
 api = productDto().product_ns
 model = productDto().product_mod
 prod_resp = productDto().product_resp
-from ....data import Data
 
 
 @api.route('/')
@@ -63,7 +64,7 @@ class OneProduct(Resource):
             product['product_id']) == int(product_id)]
 
         if not product:
-                 raise NotFound(
-                     'The requested product was not found in the database')
+            raise NotFound(
+                'The requested product was not found in the database')
 
         return product
