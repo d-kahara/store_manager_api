@@ -18,7 +18,7 @@
 
 ### Installing
 
-*Step 1*
+
 
 Create directory
 ```$ mkdir store-manager```
@@ -59,12 +59,14 @@ Install project dependencies
 
 Method | Endpoint | Functionality
 --- | --- | ---
-POST | products | Post a product
+POST | /products | Post a product
 GET | /products | Get a List of all products
 GET | /products/int:product_id | Get a product using its id
 
 #### Sales Endpoints : /api/v1
-POST | sales | Post a sale
+Method | Endpoint | Functionality
+--- | --- | ---
+POST | /sales | Post a sale
 GET | /sales | Get a List of all sales
 GET | /sales/int:sale_id | Get a sale using its id
 
