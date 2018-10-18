@@ -3,52 +3,51 @@ from flask import json
 from app import create_app
 from app.tests.v1.base_test import BaseTestCase
 
-prod_endpoint = "api/v1/products"
+sale_endpoint = "api/v1/sales"
 
 
-class TestProduct(BaseTestCase):
+class Testsale(BaseTestCase):
     data = {
-        "stock": 980,
-        "min_q": 145,
-        "name": "Pepsi",
-        "category": "Bevarages"
+        "cart_total": 1030,
+        "posted_by": "Shantel",
+        "cart_id": 10
     }
 
-    def test_create_product(self):
-        """Test for product creation endpoint."""
-        res = self.app.post("api/v1/products",
+    def test_create_sale(self):
+        """Test for sale creation endpoint."""
+        res = self.app.post(sale_endpoint,
                             data=json.dumps(self.data),
                             content_type='application/json')
         result = json.loads(res.data.decode())
         self.assertEqual(result['message'], 'success')
         self.assertEqual(res.status_code, 201)
 
-    def test_get_all_products(self):
-        """Test for  get all products endpoint."""
-        self.app.post(prod_endpoint,
+    def test_get_all_sales(self):
+        """Test for  get all sales endpoint."""
+        self.app.post(sale_endpoint,
                       data=json.dumps(self.data),
                       content_type='application/json')
-        res = self.app.get(prod_endpoint)
+        res = self.app.get(sale_endpoint)
         self.assertEqual(res.status_code, 200)
 
     def test_empty_database(self):
-        """Test products database if empty."""
-        res = self.app.get(prod_endpoint)
+        """Test sales database if empty."""
+        res = self.app.get(sale_endpoint)
         self.assertEqual(res.status_code, 404)
 
-    def test_get_product_by_id(self):
-        """Test for get product by id endpoint."""
-        self.app.post(prod_endpoint,
+    def test_get_sale_by_id(self):
+        """Test for get sale by id endpoint."""
+        self.app.post(sale_endpoint,
                       data=json.dumps(self.data),
                       content_type='application/json')
-        product_id = 1
-        res = self.app.get("/api/v1/products/{}".format(product_id))
+        sale_id = 1
+        res = self.app.get("/api/v1/sales/{}".format(sale_id))
         self.assertEqual(res.status_code, 200)
 
-    def test_get_product_that_does_not_exist(self):
-        """Test for the get product by id endpoint."""
-        product_id = 1759
-        res = self.app.get("/api/v1/products/{}".format(product_id))
+    def test_get_sale_that_does_not_exist(self):
+        """Test for the get sale by id endpoint."""
+        sale_id = 17599898
+        res = self.app.get("/api/v1/sales/{}".format(sale_id))
         self.assertEqual(res.status_code, 404)
 
 
