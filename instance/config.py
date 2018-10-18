@@ -2,7 +2,7 @@ import os
 
 
 class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'secret_key')
+    SECRET_KEY = os.getenv('SECRET_KEY', 'kaharakey')
     DEBUG = False
 
 
@@ -13,10 +13,10 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
-    DEBUG = False
+    DEBUG = True
     TESTING = True
     DATABASE_URI = os.getenv("DATABASE_TEST_URI")
-    PRESERVE_CONTEXT_ON_EXCEPTION = False
+    PRESERVE_CONTEXT_ON_EXCEPTION = True
 
 
 class ProductionConfig(Config):

@@ -46,7 +46,7 @@ class Testsale(BaseTestCase):
 
     def test_get_sale_that_does_not_exist(self):
         """Test for the get sale by id endpoint."""
-        sale_id = 17599898
+        sale_id = 1759
         res = self.app.get("/api/v1/sales/{}".format(sale_id))
         self.assertEqual(res.status_code, 404)
 
