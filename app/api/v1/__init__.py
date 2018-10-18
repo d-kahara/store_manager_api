@@ -8,6 +8,7 @@ from flask import Blueprint
 version1 = Blueprint('version1', __name__, url_prefix="/api/v1")
 
 from .endpoints.products import api as prod_ns
+from .endpoints.sales import api as sales_ns
 
 
 #Restplus configurations
@@ -18,3 +19,4 @@ api = Api(version1,
           description="An implementation of a store management API")
 
 api.add_namespace(prod_ns, path="/products")
+api.add_namespace(sales_ns, path="/sales")
