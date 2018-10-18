@@ -1,26 +1,16 @@
 
-language: python
-env:
+language: python	
+python:	
+ - "3.5"	
+cache: pip	
+install:	
+ - pip install -r requirements.txt
+ - pip install coveralls
+ - pip install codeclimate-test-reporter
 
-python:
-  - "3.5"
-
-install:
-  - pip install -r requirements.txt
-  - pip install coveralls codecov
-
-services:
-  
-addons:
-  
-
-before_script:
+script:	
+ - pytest --cov-report term-missing --cov=app 
  - coveralls
-
-
-
-script:
-  - nosetests --with-coverage --cover-package=app app/tests
-
-after-success:
-  - coveralls
+after_success:
+ - coveralls
+ - codeclimate-test-reporter
