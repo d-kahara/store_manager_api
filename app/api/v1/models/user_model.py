@@ -37,14 +37,21 @@ class User():
         Data.users.append(new_user)
         return new_user
 
-    def find_user_by_email(self, email):
+    @classmethod
+    def find_user_by_email(email):
         users = Data.users
         user = [user for user in users if user['email'] == email]
         if user:
+            user=repr(user[0])
             return user
+            
         return 'not found'
 
-    def encode_jwt_token(self, email):
+    def __repr__(self):
+        return "<User '{}'>".format(self.email)
+
+    @classmethod
+    def encode_jwt_token(cls,email):
         """method to generate access token"""
 
         # Set up payload with an expiry date, issued at date and email claim
@@ -65,11 +72,12 @@ class User():
 
     @staticmethod
     def decode_jwt_token(jw_token):
-        """method to decode the authentication token"""
+        """method to decode the JSON web token"""
 
         try:
             payload = jwt.decode(jw_token, secret_key)
-            return payload['sub']
+            return payload['email']
+
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please sign in again'
         except jwt.InvalidTokenError:
