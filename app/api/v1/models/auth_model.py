@@ -5,31 +5,6 @@ from .user_model import User
 class Auth:
 
     @staticmethod
-    def login_user(data):
-        #fetch the user data
-        try:
-            email = data.get('email')
-            password = data.get('password')
-            user = User.find_user_by_email()               
-            if user and user.validate_user_password(password):
-                token = user.encode_auth_token(email)
-                if token:
-                    response_object = {
-                        'status': 'success',
-                        'message': 'Successfully Logged In',
-                        'Authorization': token.decode()
-                    }
-                    return response_object, 200
-
-        except Exception as e:
-            print(e)
-            response_object = {
-                'status': 'Request failed ',
-                'message': 'Please try again'
-            }
-            return response_object, 500
-
-    @staticmethod
     def logout_user(data):
         if data:
             token = data.split(" ")[1]
@@ -37,7 +12,8 @@ class Auth:
             token = ''
         if token:
             resp = User.decode_jwt_token(token)
-            if not isinstance(resp, str):
+            #print(resp)
+            if isinstance(resp, bytes):
                 # to-do mark the token as blacklisted in datastore
                 response_object = {
                     'status': 'success',
@@ -53,8 +29,37 @@ class Auth:
                 return response_object, 401
         else:
             response_object = {
-                'status': 'fail',
+                'status': 'failed',
                 'message': 'Provide a valid auth token.'
             }
             return response_object, 403
 
+    # @staticmethod
+    # def get_current_user(new_request):
+    #         # get the auth token
+    #         auth_token = new_request.headers.get('Authorization')
+    #         if auth_token:
+    #             resp = User.decode_auth_token(auth_token)
+    #             if not isinstance(resp, str):
+    #                 user = User.query.filter_by(id=resp).first()
+    #                 response_object = {
+    #                     'status': 'success',
+    #                     'data': {
+    #                         'user_id': user.id,
+    #                         'email': user.email,
+    #                         'admin': user.admin,
+    #                         'registered_on': str(user.registered_on)
+    #                     }
+    #                 }
+    #                 return response_object, 200
+    #             response_object = {
+    #                 'status': 'fail',
+    #                 'message': resp
+    #             }
+    #             return response_object, 401
+    #         else:
+    #             response_object = {
+    #                 'status': 'fail',
+    #                 'message': 'Provide a valid auth token.'
+    #             }
+    #             return response_object, 401
