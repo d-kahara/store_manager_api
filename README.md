@@ -70,3 +70,9 @@ POST | /sales | Post a sale
 GET | /sales | Get a List of all sales
 GET | /sales/int:sale_id | Get a sale using its id
 
+#### Auth Endpoints : /api/v1
+Method | Endpoint | Functionality
+--- | --- | ---
+Regiser | /auth/register | Register a new user
+Login | /auth/login | Logs in a user and generates auth token
+Logout | /auth/logout | Logs out a user and destroys auth token
