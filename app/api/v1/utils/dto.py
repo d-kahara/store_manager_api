@@ -18,7 +18,7 @@ class productDto():
         'min_q': fields.Integer(description='Minimum Inventory Quantity Allowed'),
         'category': fields.String(description='Category of product'),
         'product_id': fields.Integer(description='Unique Identification for products'),
-        'created_at': fields.String(descriprion='Date created'),
+        'created_at': fields.String(description='Date created'),
     })
 
 
@@ -35,8 +35,26 @@ class SalesDto():
 
     sales_resp = sales_ns.model('Expected response for get methods on sales', {
         'sale_id': fields.Integer(description='Unique Identification for sales'),
-        'cart_id': fields.Integer(description='The cart where sale is being checked out from '),
+        'cart': fields.String(description='The cart payload '),
         'posted_by': fields.String(description='The store attendant posting the sale'),
         'cart_total': fields.Integer(description='Total worth of goods bought'),
         'created_at': fields.String(descriprion='Date created'),
     })
+
+
+
+
+
+class AuthDto:
+    auth_ns = Namespace('auth', description="Auth related Operations")
+    login = auth_ns.model('auth_details', {
+        'email': fields.String(required=True, description='The email address'),
+        'password': fields.String(required=True, description='The user password')
+        
+    })
+    user_reg = auth_ns.model('user', {
+        'email': fields.String(required=True, description='User email address'),
+        'password': fields.String(required=True, description='user password'),
+        'Is_admin': fields.Boolean(description='Sets the User\'s role')
+    })
+
