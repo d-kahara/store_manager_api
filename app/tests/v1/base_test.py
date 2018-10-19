@@ -22,5 +22,5 @@ class BaseTestCase(unittest.TestCase):
         
 
     def tearDown(self):
-      Data.products = []
-      Data.sales = []
+      Data.products.clear()
+      Data.sales.clear()
