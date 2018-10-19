@@ -13,8 +13,8 @@ class Sales():
         self.cart_id = cart_id
         self.posted_by = posted_by
         self.cart_total = cart_total
-        self.date_created = datetime.now()
-        self.date_modified = datetime.now()
+        self.date_created = datetime.utcnow()
+        self.date_modified = datetime.utcnow()
 
     def post_sale(self):
         """Sale method to make a sale record"""
