@@ -11,7 +11,7 @@ from instance.config import key as secret_key
 class User():
     """This class contains the functions of the user model"""
 
-    def __init__(self, password="password", email="email@mail.com", admin=False):
+    def __init__(self, password="password", email="email@mail.com", admin=True):
         """initialize the user model"""
  
         self.password = generate_password_hash(password)
@@ -29,6 +29,7 @@ class User():
         """Save User Object to Data"""
 
         new_user = dict(
+            admin=self.admin,
             email=self.email,
             password=self.password,
             registered_on=self.registered_on
