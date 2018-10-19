@@ -45,7 +45,7 @@ class Product(Resource):
     @api.response(404, 'No products added to the database')
     def get(self):
         products = Data.products
-        resp = [p for p in products]
+        resp = [product for product in products]
 
         if resp == []:
             raise NotFound('No Products have been added to the database')
