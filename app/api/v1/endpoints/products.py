@@ -9,10 +9,12 @@ from werkzeug.exceptions import NotFound
 from ..utils.dto import productDto
 from ..models.product_model import ProductModel
 from ....data import Data
+from ..utils.decorator import token_required, admin_token_required 
 
 api = productDto().product_ns
 model = productDto().product_mod
 prod_resp = productDto().product_resp
+
 
 
 @api.route('/')
@@ -20,6 +22,8 @@ class Product(Resource):
 
     @api.response(201, 'Product created successfully')
     @api.expect(model, validate=True)
+    @api.doc(security='Auth_token')
+    @admin_token_required
     def post(self):
         """Endpoint for creating a new product"""
         data = json.loads(request.data.decode().replace("'", '"'))
@@ -38,10 +42,12 @@ class Product(Resource):
 
         return resp, 201
 
-    @api.doc('list_of_all_products')
+
     @api.marshal_list_with(model, envelope='products')
     @api.response(200, 'Success')
     @api.response(404, 'No products added to the database')
+    @api.doc(security='Auth_token')
+    @token_required
     def get(self):
         """Endpoint for getting all products"""
 
@@ -57,6 +63,7 @@ class Product(Resource):
 class OneProduct(Resource):
 
     @api.marshal_with(prod_resp)
+    @token_required
     def get(self, product_id):
         """Endpoint for getting a product by its id"""
 

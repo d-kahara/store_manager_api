@@ -13,11 +13,17 @@ from .endpoints.auth import api as auth_ns
 
 
 #Restplus configurations
+authorizations = {'Auth_token': {
+	'type': 'apiKey',
+	'in': 'header',
+	'name': 'Authorization'
+}}
 
 api = Api(version1,
           title='Store  Manager Api',
           version='1.0',
-          description="An implementation of a store management API")
+          description="An implementation of a store management API",
+          authorizations=authorizations)
 
 api.add_namespace(auth_ns, path='/auth')
 api.add_namespace(prod_ns, path="/products")

@@ -9,16 +9,19 @@ from werkzeug.exceptions import NotFound
 #local imports
 from ..utils.dto import SalesDto
 from ..models.sales_model import Sales
+from ..utils.decorator import token_required, admin_token_required
+from ....data import Data
+
 api = SalesDto.sales_ns
 model = SalesDto().sales_mod
 sales_resp = SalesDto().sales_resp
-from ....data import Data
 
 
 @api.route('/')
 class Sale(Resource):
+    @api.doc(security='Auth_token')
+    @token_required
 
-    @api.doc('list_of_all_products')
     @api.marshal_list_with(sales_resp, envelope='sales')
     def get(self):
         """Endpoint for getting  a list of sales"""
@@ -32,8 +35,9 @@ class Sale(Resource):
     doc = "This endpoint allows a store attendant to make a sale."
 
     @api.response(201, 'Sale created successfully')
-    @api.doc(doc)
     @api.expect(model, validate=True)
+    @api.doc(security='Auth_token')
+    @admin_token_required
     def post(self):
         """Endpoint for creating a new sale"""
 
@@ -57,6 +61,8 @@ class Sale(Resource):
 class OneProduct(Resource):
 
     @api.marshal_with(sales_resp)
+    @api.doc(security='Auth_token')
+    @token_required
     def get(self, sale_id):
         """Endpoint for getting a sale by its Id"""
 
