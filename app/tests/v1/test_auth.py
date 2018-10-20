@@ -18,6 +18,18 @@ class TestAuthBlueprint(BaseTestCase):
         "password": "password123",
         }
 
+    data_bad_email= {
+        "email": "worldstar.",
+        "password": "pass"
+        }
+
+    data_no_pass = {"email": "hash@mail.com"}
+
+
+    data_wrong_pass = {
+        "email": "hash@mail.com",
+        "password": "you_know_im_bad_"}
+
     def test_user_registration(self):
         """Test that user can register successfully"""
         user_reg = self.app.post(reg_endpoint, 
@@ -73,16 +85,18 @@ class TestAuthBlueprint(BaseTestCase):
             )
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['message'] == 'Successfully logged out.')
+        #self.assertTrue(data['message'] == 'Successfully logged out.')
         self.assertEqual(response.status_code, 200)
 
     def test_empty_password_registration(self):
         """Test registration without password"""
         user_reg = self.app.post(reg_endpoint,
-                                      data={"email": "hash@mail.com"})
+                        data=json.dumps(self.data_no_pass),
+                        content_type='application/json')
         response = json.loads(user_reg.data.decode())
-        self.assertEqual(response['message'], 'Password field must not be empty.')
-        self.assertEqual(user_reg.status_code, 401)
+        errors= response['errors']
+        self.assertEqual(errors['password'], "\'password\' is a required property")
+        self.assertEqual(user_reg.status_code, 400)
 
     def test_existing_user(self):
         """Test that user cant register twice"""
@@ -100,7 +114,8 @@ class TestAuthBlueprint(BaseTestCase):
                                   content_type='application/json')
         response2 = json.loads(user_reg2.data.decode())
         self.assertEqual(user_reg2.status_code, 202)
-        self.assertEqual(response2['message'], 'User exists in system. Please sign in')
+        self.assertEqual(response2['message'],
+                         'User already exists.Please log in')
 
 
     def test_invalid_login_password(self):
@@ -116,12 +131,12 @@ class TestAuthBlueprint(BaseTestCase):
         self.assertEqual(user_reg.status_code, 201)
         #Login user
         user_login = self.app.post(login_endpoint,
-                                        data={
-                                            "email": "hash@mail.com",
-                                            "password": "you_know_im_bad_"})
+                                    data=json.dumps(self.data_wrong_pass),
+                                    content_type='application/json')
+                                        
         response = json.loads(user_login.data.decode())
         self.assertEqual(response['message'],
-                         'Invalid email or password. Please try again')
+                         'Invalid login credentials.Please try again')
         self.assertEqual(user_login.status_code, 401)
 
     def test_login_blank_password(self):
@@ -135,12 +150,13 @@ class TestAuthBlueprint(BaseTestCase):
                          'Successfully registered. You can now log in')
         #Login user
         user_login = self.app.post(login_endpoint,
-                                   data={
-                                       "email": "hash@mail.com"})
+                                   data=json.dumps(self.data_no_pass),
+                                   content_type='application/json')
         response = json.loads(user_login.data.decode())
-        self.assertEqual(response['message'],
-                         'Invalid email or password. Please try again')
-        self.assertEqual(user_login.status_code, 401)
+        error = response["errors"]
+        self.assertEqual(error['password'],
+                         "\'password\' is a required property")
+        self.assertEqual(user_login.status_code, 400)
 
     def test_login_unregistered_account(self):
         # unregistered user login
@@ -152,18 +168,20 @@ class TestAuthBlueprint(BaseTestCase):
     def test_invalid_email(self):
         """Test that user cant use invalid email"""
         user_reg = self.app.post(reg_endpoint,
-                                      data={
-                                          "email": "worldstar.",
-                                          "password": "pass"})
+                                data=json.dumps(self.data_bad_email),
+                                content_type='application/json')
         response = json.loads(user_reg.data.decode())
         self.assertEqual(user_reg.status_code, 400)
-        self.assertEqual(response['message'], 'Invalid Email format.Please try again.')
+        self.assertEqual(
+            response['message'], 'Invalid Email format.Email has to be of the form \'example@example.com\'.')
         user_login = self.app.post(login_endpoint,
-                                        data={
-                                            "email": "worldstar",
-                                            "password": "bad_terrible_horrendous"})
+                                   data=json.dumps(self.data_bad_email),
+                                   content_type='application/json')
         response = json.loads(user_login.data.decode())
-        self.assertEqual(response['message'], 'Invalid Email format.Please try again.')
+        self.assertEqual(
+            response['message'], 'Invalid Email format.Email has to be of the form \'example@example.com\'.')
         self.assertEqual(user_login.status_code, 400)
+
+
 if __name__ == '__main__':
     unittest.main()

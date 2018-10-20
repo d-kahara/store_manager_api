@@ -10,20 +10,22 @@ from instance.config import key as secret_key
 
 class User():
     """This class contains the functions of the user model"""
+    password = ''
 
-    def __init__(self, password="password", email="email@mail.com", admin=True):
+    def __init__(self, password, email, admin=False):
         """initialize the user model"""
  
-        self.password = generate_password_hash(password)
+        User.password = generate_password_hash(password)
         self.email = email
         self.registered_on = datetime.now()
         self.admin = admin
 
+    @classmethod
+    def validate_user_password(cls, password):
 
-    def validate_user_password(self, password):
         """Compare the entered password with retrieved password"""
 
-        return check_password_hash(self.password, password)
+        return check_password_hash(User.password, password)
 
     def save_user(self):
         """Save User Object to Data"""
@@ -39,12 +41,12 @@ class User():
         return new_user
 
     @classmethod
-    def find_user_by_email(email):
+    def find_user_by_email(cls, email):
         users = Data.users
         user = [user for user in users if user['email'] == email]
         if user:
-            user=repr(user[0])
-            return user
+            
+            return user[0]
             
         return 'not found'
 
@@ -58,9 +60,9 @@ class User():
         # Set up payload with an expiry date, issued at date and email claim
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=5),
-                'iat': datetime.datetime.utcnow(),
-                'email': email
+                'exp': datetime.now() + timedelta(days=2, seconds=25),
+                'iat': datetime.now(),
+                'sub': email
             }
 
             return jwt.encode(
@@ -77,7 +79,7 @@ class User():
 
         try:
             payload = jwt.decode(jw_token, secret_key)
-            return payload['email']
+            return payload['sub']
 
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please sign in again'

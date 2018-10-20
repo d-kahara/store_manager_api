@@ -55,6 +55,5 @@ class AuthDto:
     user_reg = auth_ns.model('user', {
         'email': fields.String(required=True, description='User email address'),
         'password': fields.String(required=True, description='user password'),
-        'Is_admin': fields.Boolean(description='Sets the User\'s role')
     })
 

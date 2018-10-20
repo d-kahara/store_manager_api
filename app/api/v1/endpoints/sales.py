@@ -21,6 +21,8 @@ class Sale(Resource):
     @api.doc('list_of_all_products')
     @api.marshal_list_with(sales_resp, envelope='sales')
     def get(self):
+        """Endpoint for getting  a list of sales"""
+
         sales = Sales.get_all_sales(self)
         if sales == []:
             raise NotFound('No sales made')
@@ -33,6 +35,8 @@ class Sale(Resource):
     @api.doc(doc)
     @api.expect(model, validate=True)
     def post(self):
+        """Endpoint for creating a new sale"""
+
         data = json.loads(request.data.decode().replace("'", '"'))
         cart_id = data['cart_id']
         posted_by = data['posted_by']
@@ -54,6 +58,7 @@ class OneProduct(Resource):
 
     @api.marshal_with(sales_resp)
     def get(self, sale_id):
+        """Endpoint for getting a sale by its Id"""
 
         sale = Sales.get_single_sale(sale_id)
 

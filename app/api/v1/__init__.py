@@ -19,6 +19,6 @@ api = Api(version1,
           version='1.0',
           description="An implementation of a store management API")
 
+api.add_namespace(auth_ns, path='/auth')
 api.add_namespace(prod_ns, path="/products")
 api.add_namespace(sales_ns, path="/sales")
-api.add_namespace(auth_ns, path='/auth')

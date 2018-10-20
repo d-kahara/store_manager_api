@@ -17,12 +17,11 @@ prod_resp = productDto().product_resp
 
 @api.route('/')
 class Product(Resource):
-    doc = "This endpoint allows a store owner to create a new product."
 
     @api.response(201, 'Product created successfully')
-    @api.doc(doc)
     @api.expect(model, validate=True)
     def post(self):
+        """Endpoint for creating a new product"""
         data = json.loads(request.data.decode().replace("'", '"'))
         name = data['name']
         stock = data['stock']
@@ -44,6 +43,8 @@ class Product(Resource):
     @api.response(200, 'Success')
     @api.response(404, 'No products added to the database')
     def get(self):
+        """Endpoint for getting all products"""
+
         products = Data.products
         resp = [product for product in products]
 
@@ -57,6 +58,7 @@ class OneProduct(Resource):
 
     @api.marshal_with(prod_resp)
     def get(self, product_id):
+        """Endpoint for getting a product by its id"""
 
         products = Data.products
 
