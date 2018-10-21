@@ -1,13 +1,12 @@
 from flask import request
 from flask_restplus import Resource
-import json, re
+import json
 from validate_email import validate_email
 
 from ..models.auth_model import Auth
 from ..utils.dto import AuthDto
 from ..models.user_model import User
-user_auth = AuthDto.login
-user_reg = AuthDto.user_reg
+user_auth = AuthDto.auth
 
 api = AuthDto.auth_ns
 
@@ -18,7 +17,7 @@ class Register(Resource):
     """
     @api.response(201, 'User created successfully')
     @api.doc('Register a new User')
-    @api.expect(user_reg, validate=True)
+    @api.expect(user_auth, validate=True)
 
     def post(self):
         """Register a new user user"""
@@ -27,7 +26,7 @@ class Register(Resource):
         password = data['password']
         admin  = data['admin']
 
-        """validation for password """
+        #password validation
         if password == '' or password == ' ':
             resp = dict(
                 message='Password field must not be empty.',
@@ -35,17 +34,6 @@ class Register(Resource):
             )
             return resp, 401
 
-        # regex = "^[a-zA-Z0-9_ ]+$"
-        # if re.match(regex, password):
-        #     return password
-        # else:
-        #     resp = dict(
-        #         message='Invalid email or password. Please try again',
-        #         status='Failed'
-        #     )
-        #     return resp, 400
-
-        
 
         is_valid = validate_email(email)
         if not is_valid:
@@ -72,7 +60,6 @@ class Register(Resource):
                     )
 
         return resp, 201
-
 
 
 @api.route('/login')

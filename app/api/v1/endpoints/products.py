@@ -2,7 +2,7 @@ import json
 
 # third party imports
 from flask_restplus import Resource
-from flask import request, jsonify
+from flask import request
 from werkzeug.exceptions import NotFound
 
 # local imports

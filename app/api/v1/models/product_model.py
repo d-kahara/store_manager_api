@@ -1,5 +1,5 @@
 from flask import request, make_response, jsonify
-from datetime import datetime, timedelta
+from datetime import datetime
 from ....data import Data
 
 

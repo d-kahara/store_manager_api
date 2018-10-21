@@ -9,8 +9,8 @@ from werkzeug.exceptions import NotFound
 #local imports
 from ..utils.dto import SalesDto
 from ..models.sales_model import Sales
-from ..utils.decorator import token_required, admin_token_required
-from ....data import Data
+from ..utils.decorator import token_required
+
 
 api = SalesDto.sales_ns
 model = SalesDto().sales_mod

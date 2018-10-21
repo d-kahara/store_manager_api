@@ -1,5 +1,4 @@
 """This class will contain test configurations"""
-from flask_testing import TestCase
 import json
 import unittest
 
@@ -29,6 +28,7 @@ class BaseTestCase(unittest.TestCase):
     admin_user_data = {
         "email": "admin@mail.com",
         "password": "password123",
+        "admin": True
     }
 
     def create_app(self):

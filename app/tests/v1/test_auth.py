@@ -24,9 +24,8 @@ class TestAuthBlueprint(BaseTestCase):
         "email": "worldstar.",
         "password": "pass",
         "admin": False
-
         }
-
+        
     data_no_pass = {    
                     "email": "hash@mail.com", 
                    "admin": False

@@ -9,7 +9,7 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth_token = None
-        current_user = None
+       
 
         if 'Authorization' in request.headers:
                 auth_token = request.headers['Authorization']
@@ -22,7 +22,6 @@ def token_required(f):
             return response_object, 401
         try:
             data = User.decode_jwt_token(auth_token)
-            print(data)
             for user in Data.users:
                 if user['email'] == data['sub']:
                     current_user = user
@@ -57,7 +56,6 @@ def admin_token_required(f):
             return response_object, 401
         try:
             data = User.decode_jwt_token(auth_token)
-            print(data)
             for user in Data.users:
                 if user['email'] == data['sub'] and data['admin'] == True:
                     current_user = user
