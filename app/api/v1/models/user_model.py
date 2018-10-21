@@ -12,7 +12,7 @@ class User():
     """This class contains the functions of the user model"""
     password = ''
 
-    def __init__(self, password, email, admin=False):
+    def __init__(self, password, email, admin):
         """initialize the user model"""
  
         User.password = generate_password_hash(password)
@@ -54,7 +54,7 @@ class User():
         return "<User '{}'>".format(self.email)
 
     @classmethod
-    def encode_jwt_token(cls,email):
+    def encode_jwt_token(cls,email,admin):
         """method to generate access token"""
 
         # Set up payload with an expiry date, issued at date and email claim
@@ -62,7 +62,8 @@ class User():
             payload = {
                 'exp': datetime.now() + timedelta(days=2, seconds=25),
                 'iat': datetime.now(),
-                'sub': email
+                'sub': email,
+                'admin': admin
             }
 
             return jwt.encode(
@@ -73,13 +74,13 @@ class User():
         except Exception as e:
             return e
 
-    @staticmethod
-    def decode_jwt_token(jw_token):
+    @classmethod
+    def decode_jwt_token(cls,jw_token):
         """method to decode the JSON web token"""
 
         try:
-            payload = jwt.decode(jw_token, secret_key)
-            return payload['sub']
+            payload = jwt.decode(jw_token, secret_key,algorithms=['HS256'])
+            return payload
 
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please sign in again'

@@ -16,19 +16,28 @@ class TestAuthBlueprint(BaseTestCase):
     data = {
         "email": "hash@mail.com",
         "password": "password123",
+        "admin": False
+
         }
 
     data_bad_email= {
         "email": "worldstar.",
-        "password": "pass"
+        "password": "pass",
+        "admin": False
+
         }
 
-    data_no_pass = {"email": "hash@mail.com"}
+    data_no_pass = {    
+                    "email": "hash@mail.com", 
+                   "admin": False
+                    }
 
 
     data_wrong_pass = {
         "email": "hash@mail.com",
-        "password": "you_know_im_bad_"}
+        "password": "you_know_im_bad_",
+        "admin": False
+    }
 
     def test_user_registration(self):
         """Test that user can register successfully"""
@@ -181,6 +190,16 @@ class TestAuthBlueprint(BaseTestCase):
         self.assertEqual(
             response['message'], 'Invalid Email format.Email has to be of the form \'example@example.com\'.')
         self.assertEqual(user_login.status_code, 400)
+    
+    def test_token_creation(self):
+        """Test that auth token is created when a user logs in"""
+
+        data = self.create_test_user()
+        authentication_token = data['Authorization']
+        self.assertTrue(authentication_token)
+
+
+
 
 
 if __name__ == '__main__':

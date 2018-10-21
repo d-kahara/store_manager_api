@@ -22,19 +22,20 @@ def token_required(f):
             return response_object, 401
         try:
             data = User.decode_jwt_token(auth_token)
+            print(data)
             for user in Data.users:
-                if user['email'] == data['email']:
+                if user['email'] == data['sub']:
                     current_user = user
-                    print(current_user)
+                    
         except:
 
             response_object = dict(
-                message='Token is invalid..',
+                message='token is invalid.',
                 status='Failed.'
             )
             return response_object,  403
 
-        return f(current_user, *args, **kwargs)
+        return f(*args, **kwargs)
     return decorated
 
 
@@ -56,17 +57,17 @@ def admin_token_required(f):
             return response_object, 401
         try:
             data = User.decode_jwt_token(auth_token)
+            print(data)
             for user in Data.users:
-                if user['email'] == data['email']:
+                if user['email'] == data['sub'] and data['admin'] == True:
                     current_user = user
-                    if current_user['admin'] == True:
-                        current_user = admin_user
-                    else:
-                        response=dict(
-                            message="Admin Token is required.",
-                            status="Failed."
-                        )
-                        return response, 401
+                else:
+
+                    response=dict(
+                        message="Admin Token is required.",
+                        status="Failed."
+                    )
+                    return response, 401
                     
         except:
 
@@ -76,5 +77,5 @@ def admin_token_required(f):
             )
             return response_object,  403
 
-        return f(current_user, *args, **kwargs)
+        return f(*args, **kwargs)
     return decorated

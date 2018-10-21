@@ -21,7 +21,6 @@ sales_resp = SalesDto().sales_resp
 class Sale(Resource):
     @api.doc(security='Auth_token')
     @token_required
-
     @api.marshal_list_with(sales_resp, envelope='sales')
     def get(self):
         """Endpoint for getting  a list of sales"""
@@ -37,7 +36,8 @@ class Sale(Resource):
     @api.response(201, 'Sale created successfully')
     @api.expect(model, validate=True)
     @api.doc(security='Auth_token')
-    @admin_token_required
+    @token_required
+
     def post(self):
         """Endpoint for creating a new sale"""
 

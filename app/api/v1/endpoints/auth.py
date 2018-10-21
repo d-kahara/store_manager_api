@@ -25,6 +25,7 @@ class Register(Resource):
         data = json.loads(request.data.decode().replace("'", '"'))
         email = data['email']
         password = data['password']
+        admin  = data['admin']
 
         """validation for password """
         if password == '' or password == ' ':
@@ -55,7 +56,7 @@ class Register(Resource):
             return resp, 400
 
         # save user in data list
-        user = User(password, email)
+        user = User(password, email,admin)
 
         existing_user = User.find_user_by_email(email)
         if not existing_user == 'not found':
@@ -110,13 +111,14 @@ class LoginEndpoint(Resource):
                 
                 # Generate access token
                 email= existing_user['email']
-                authentication_token = User.encode_jwt_token(email)
+                admin= existing_user['admin']
+                authentication_token = User.encode_jwt_token(email,admin)
 
                 if authentication_token:
                     resp = dict(
                         status='success',
                         message='Login successful',
-                        Authorization=authentication_token.decode()
+                        Authorization=authentication_token.decode('UTF-8')
                     )
                     return resp, 200
             else:
