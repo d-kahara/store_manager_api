@@ -2,9 +2,9 @@
 
 ## Introduction
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=bg-travis-set-up-161308445)](https://coveralls.io/github/d-kahara/store_manager_api?branch=bg-travis-set-up-161308445)
-[![Build Status](https://travis-ci.org/d-kahara/store_manager_api.svg?branch=master)](https://travis-ci.org/d-kahara/store_manager_api)
-[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/d-kahara/store_manager_api)
+[![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=bg-test-refactor-%23161365564)](https://coveralls.io/github/d-kahara/store_manager_api?branch=bg-test-refactor-%23161365564)
+[![Build Status](https://travis-ci.org/d-kahara/store_manager_api.svg?branch=bg-test-refactor-%23161365564)](https://travis-ci.org/d-kahara/store_manager_api)[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/d-kahara/store_manager_api)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/65dc0c9d43554d21843a56817fd02525)](https://www.codacy.com/app/d-kahara/store_manager_api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=d-kahara/store_manager_api&amp;utm_campaign=Badge_Grade)
 
 ### Features
 
@@ -15,10 +15,7 @@
 5. Admin can get all sale order records.
 6. Admin can add an attendant and assign admin privileges.
 
-
 ### Installing
-
-
 
 Create directory
 ```$ mkdir store-manager```
