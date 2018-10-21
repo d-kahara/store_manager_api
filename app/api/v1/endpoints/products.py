@@ -64,6 +64,8 @@ class OneProduct(Resource):
 
     @api.marshal_with(prod_resp)
     @token_required
+    @api.doc(security='Auth_token')
+
     def get(self, product_id):
         """Endpoint for getting a product by its id"""
 
