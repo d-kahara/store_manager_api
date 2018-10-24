@@ -36,33 +36,4 @@ class Auth:
             }
             return response_object, 403
 
-    # @staticmethod
-    # def get_current_user(new_request):
-    #     """This method retrieves the current user from the jwt token"""
-
-    #     auth_token = new_request.headers.get('Authorization')
-    #     if auth_token:
-    #         resp = User.decode_jwt_token(auth_token)
-    #         if not isinstance(resp, int):
-    #             user = User.find_user_by_email(resp)
-    #             response_object = {
-    #                 'status': 'success',
-    #                 'data': {
-    #                     'user_id': user.id,
-    #                     'email': user.email,
-    #                     'admin': user.admin,
-    #                     'registered_on': str(user.registered_on)
-    #                 }
-    #             }
-    #             return response_object, 200
-    #         response_object = {
-    #             'status': 'fail',
-    #             'message': resp
-    #         }
-    #         return response_object, 401
-    #     else:
-    #         response_object = {
-    #             'status': 'fail',
-    #             'message': 'Provide a valid auth token.'
-    #         }
-    #         return response_object, 401
+  

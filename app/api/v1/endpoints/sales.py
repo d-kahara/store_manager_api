@@ -27,7 +27,11 @@ class Sale(Resource):
 
         sales = Sales.get_all_sales(self)
         if sales == []:
-            raise NotFound('No sales made')
+            #return empty list
+            response_object = dict(
+                message=[],
+                status='success'
+            )
 
         return sales
 

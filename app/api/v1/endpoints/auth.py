@@ -83,7 +83,6 @@ class LoginEndpoint(Resource):
             )
             return resp, 400
             
-
         # Fetch user by email to check if user exists
         existing_user = User.find_user_by_email(email)
         if existing_user == 'not found':
@@ -91,8 +90,6 @@ class LoginEndpoint(Resource):
                 message="Email does not exist.Please register"
             )
             return resp, 401
-        
-
         try:
             if existing_user and User.validate_user_password(password):
                 

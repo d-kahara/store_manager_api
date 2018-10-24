@@ -5,4 +5,4 @@ class Data:
     products = []
     sales = []
     users = []
-    token_blacklist = []
+    # token_blacklist = []

@@ -48,7 +48,7 @@ class TestProduct(BaseTestCase):
         res = self.app.get(prod_endpoint,
                            headers=dict(Authorization=authentication_token),
                            )
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 200)
 
     def test_get_product_by_id(self):
         """Test for get product by id endpoint."""
@@ -75,5 +75,3 @@ class TestProduct(BaseTestCase):
         self.assertEqual(res.status_code, 404)
 
 
-if __name__ == "__main__":
-    unittest.main()

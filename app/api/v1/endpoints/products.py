@@ -2,7 +2,7 @@ import json
 
 # third party imports
 from flask_restplus import Resource
-from flask import request
+from flask import request, make_response, jsonify
 from werkzeug.exceptions import NotFound
 
 # local imports
@@ -43,9 +43,8 @@ class Product(Resource):
         return resp, 201
 
 
-    @api.marshal_list_with(model, envelope='products')
-    @api.response(200, 'Success')
-    @api.response(404, 'No products added to the database')
+    #@api.marshal_list_with(model, envelope='products')
+
     @api.doc(security='Auth_token')
     @token_required
     def get(self):
@@ -54,10 +53,16 @@ class Product(Resource):
         products = Data.products
         resp = [product for product in products]
 
-        if resp == []:
-            raise NotFound('No Products have been added to the database')
-        return resp
-
+        print(resp)
+        if resp == []:  
+            response_object = dict(
+                message=[],
+                status='success'
+            )
+            return response_object, 200
+        return make_response(jsonify({
+            "products":resp
+        }), 200)
 
 @api.route('/<int:product_id>')
 class OneProduct(Resource):

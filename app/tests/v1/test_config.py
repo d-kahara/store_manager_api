@@ -38,5 +38,3 @@ class TestProductionConfig(TestCase):
         self.assertTrue(app.config['DEBUG'] is False)
 
 
-if __name__ == '__main__':
-    unittest.main()
