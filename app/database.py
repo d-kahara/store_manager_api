@@ -14,11 +14,11 @@ class SetupDB(object):
 
     def create_tables(self):
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS users(
-        user_id         SERIAL PRIMARY KEY,
-        email           VARCHAR(50) UNIQUE NOT NULL,
-        password        VARCHAR(100) UNIQUE NOT NULL,
-        role            VARCHAR(50) NOT NULL,
-        registered_on   VARCHAR(100) NOT NULL
+                user_id         SERIAL PRIMARY KEY,
+                email           VARCHAR(50) UNIQUE NOT NULL,
+                password        VARCHAR(100) UNIQUE NOT NULL,
+                role            VARCHAR(50) NOT NULL,
+                registered_on   VARCHAR(100) NOT NULL
         );''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS products(
@@ -26,8 +26,12 @@ class SetupDB(object):
                 inventory            INTEGER DEFAULT 0,
                 min_quantity         INTEGER DEFAULT 0,
                 category             VARCHAR(20) NOT NULL,
-                date_created         VARCHAR(50) NOT NULL,
-                q_answers            INTEGER DEFAULT 0
+                date_created         VARCHAR(50) NOT NULL
+                );''')
+
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS blacklist(
+                token_id                SERIAL PRIMARY KEY,
+                token   VARCHAR(200)
                 );''')
 
         self.db_connection.commit()
