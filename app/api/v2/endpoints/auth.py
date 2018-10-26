@@ -120,7 +120,11 @@ class Logout(Resource):
     @api.doc(security='Auth_token')
     def post(self):
         """Endpoint for User Logout"""
+<<<<<<< HEAD
         auth_token = request.headers.get('Authorization')   
+=======
+        auth_token = request.headers.get('Authorization')
+>>>>>>> 1c02535b67dae9a11a6b8586ab215b846767f1d9
         if not auth_token:
             raise BadRequest(
                 "No authorization header provided. This resource is secure.")
