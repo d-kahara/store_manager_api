@@ -2,7 +2,7 @@ import json
 
 # third party imports
 from flask_restplus import Resource
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from werkzeug.exceptions import NotFound
 
 
@@ -21,19 +21,22 @@ sales_resp = SalesDto().sales_resp
 class Sale(Resource):
     @api.doc(security='Auth_token')
     @token_required
-    @api.marshal_list_with(sales_resp, envelope='sales')
+    #@api.marshal_list_with(sales_resp, envelope='sales')
     def get(self):
         """Endpoint for getting  a list of sales"""
 
         sales = Sales.get_all_sales(self)
         if sales == []:
-            #return empty list
             response_object = dict(
-                message=[],
+                Sales=sales,
                 status='success'
             )
+            return response_object, 200
+        return make_response(jsonify({
+            "Sales": sales
+        }), 200)
 
-        return sales
+      
 
     doc = "This endpoint allows a store attendant to make a sale."
 

@@ -22,8 +22,8 @@ class Product(Resource):
 
     @api.response(201, 'Product created successfully')
     @api.expect(model, validate=True)
-    @api.doc(security='Auth_token')
-    @admin_token_required
+    # @api.doc(security='Auth_token')
+    # @admin_token_required
     def post(self):
         """Endpoint for creating a new product"""
         data = json.loads(request.data.decode().replace("'", '"'))
@@ -46,11 +46,12 @@ class Product(Resource):
     #@api.marshal_list_with(model, envelope='products')
 
     @api.doc(security='Auth_token')
-    @token_required
+    # @token_required
     def get(self):
         """Endpoint for getting all products"""
 
         products = Data.products
+
         resp = [product for product in products]
 
         print(resp)
@@ -68,8 +69,8 @@ class Product(Resource):
 class OneProduct(Resource):
 
     @api.marshal_with(prod_resp)
-    @token_required
-    @api.doc(security='Auth_token')
+    # @token_required
+    # @api.doc(security='Auth_token')
 
     def get(self, product_id):
         """Endpoint for getting a product by its id"""
@@ -84,3 +85,28 @@ class OneProduct(Resource):
                 'The requested product was not found in the database')
 
         return product
+
+    # @token_required
+    # @api.doc(security='Auth_token')
+    @api.expect(model, validate=True)
+
+    def put(self, product_id):
+        data = json.loads(request.data.decode().replace("'", '"'))
+        name = data['name']
+        stock = data['stock']
+        min_q = data['min_q']
+        category = data['category']
+
+
+        updated_prd = ProductModel.edit_product(
+          product_id) 
+        response= dict(
+            status='success',
+            Product=updated_prd
+        )
+        return response, 200
+
+    def delete(self, product_id):
+        deleted_product = ProductModel.delete_product(product_id)
+        if deleted_product:
+            return dict(message="product deleted successfully", status="success"), 200

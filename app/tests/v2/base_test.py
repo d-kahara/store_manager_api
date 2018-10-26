@@ -76,6 +76,6 @@ class BaseTestCase(unittest.TestCase):
         DATABASE_URI = app_config['testing'].DATABASE_URI
         conn = psycopg2.connect(DATABASE_URI)
         cursor = conn.cursor()
-        cursor.execute("DROP TABLE users, products")
+        cursor.execute("DROP TABLE users, products, blacklist")
         conn.commit()
         conn.close()

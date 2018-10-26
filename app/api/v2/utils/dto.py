@@ -18,7 +18,9 @@ class productDto():
         'min_quantity': fields.Integer(description='Minimum Inventory Quantity Allowed'),
         'category': fields.String(description='Category of product'),
         'product_id': fields.Integer(description='Unique Identification for products'),
-        'date_created': fields.DateTime(dt_format='rfc822', description='Date created'),
+        'date_created': fields.String(description='Date created'),
+        'date_modified': fields.String(description='Date modified'),
+
     })
 
 

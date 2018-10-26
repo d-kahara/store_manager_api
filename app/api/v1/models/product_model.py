@@ -1,4 +1,6 @@
 from flask import request, make_response, jsonify
+from werkzeug.exceptions import NotFound
+
 from datetime import datetime
 from ....data import Data
 
@@ -28,3 +30,31 @@ class ProductModel():
         }
         #save the product to the products list
         Data.products.append(product)
+
+    @staticmethod
+    def edit_product(product_id):
+        """method to Edit Product details"""
+ 
+        update_prd = [
+            prod for prod in Data.products if prod['product_id'] == product_id]
+ 
+        if update_prd:
+            # print(update_prd)
+            # update_prd[0]['name'] = name
+            # update_prd[0]['stock'] = stock
+            # update_prd[0]['category'] = category
+            # update_prd[0]['min_q'] = min_q  
+            return update_prd
+        raise NotFound('Product Not Found')
+
+    @staticmethod
+    def delete_product(product_id):
+        """Class method to delete products from inventory"""
+
+        deleted_prd = [
+            prod for prod in Data.products if prod['product_id'] == product_id]
+        if deleted_prd:
+            Data.products.remove(deleted_prd[0])
+            return deleted_prd
+        raise NotFound('Product Not Found')
+        

@@ -87,7 +87,7 @@ class TestAuthBlueprint(BaseTestCase):
         response = self.app.post(
             logout_endpoint,
             headers=dict(
-                Authorization='Bearer ' + auth_token
+                Authorization=auth_token
             )
         )
         data = json.loads(response.data.decode())
