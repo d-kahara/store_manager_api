@@ -21,6 +21,11 @@ class SetupDB(object):
                 registered_on   VARCHAR(100) NOT NULL
         );''')
 
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS blacklist(
+                tokens           VARCHAR(500) UNIQUE NOT NULL
+
+        );''')
+
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS products(
                 product_id           SERIAL PRIMARY KEY,
                 inventory            INTEGER DEFAULT 0,
@@ -32,16 +37,14 @@ class SetupDB(object):
 
                 );''')
 
-        # self.cursor.execute('''CREATE TABLE IF NOT EXISTS sales(
-        #         sale_id           SERIAL PRIMARY KEY,
-        #         inventory            INTEGER DEFAULT 0,
-        #         min_quantity         INTEGER DEFAULT 0,
-        #         category             VARCHAR(20) NOT NULL,
-        #         date_created         VARCHAR(50) NOT NULL,
-        #         date_modified        VARCHAR(50) NOT NULL,
-        #         product_name         VARCHAR(50) UNIQUE NOT NULL
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS sales(
+                sale_id           SERIAL PRIMARY KEY,
+                cart_total            INTEGER DEFAULT 0,
+                 date_created         VARCHAR(50) NOT NULL,
+                date_modified        VARCHAR(50) NOT NULL,
+                posted_by         VARCHAR(50) UNIQUE NOT NULL
 
-        #         );''')
+                );''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS blacklist(
 

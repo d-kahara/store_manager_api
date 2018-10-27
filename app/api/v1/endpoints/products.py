@@ -22,8 +22,8 @@ class Product(Resource):
 
     @api.response(201, 'Product created successfully')
     @api.expect(model, validate=True)
-    # @api.doc(security='Auth_token')
-    # @admin_token_required
+    @api.doc(security='Auth_token')
+    @admin_token_required
     def post(self):
         """Endpoint for creating a new product"""
         data = json.loads(request.data.decode().replace("'", '"'))
@@ -69,8 +69,8 @@ class Product(Resource):
 class OneProduct(Resource):
 
     @api.marshal_with(prod_resp)
-    # @token_required
-    # @api.doc(security='Auth_token')
+    @token_required
+    @api.doc(security='Auth_token')
 
     def get(self, product_id):
         """Endpoint for getting a product by its id"""
@@ -99,13 +99,15 @@ class OneProduct(Resource):
 
 
         updated_prd = ProductModel.edit_product(
-          product_id) 
+            name, stock,  category, min_q, product_id)
         response= dict(
             status='success',
             Product=updated_prd
         )
         return response, 200
 
+    @token_required
+    @api.doc(security='Auth_token')
     def delete(self, product_id):
         deleted_product = ProductModel.delete_product(product_id)
         if deleted_product:

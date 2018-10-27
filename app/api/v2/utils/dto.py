@@ -22,6 +22,15 @@ class productDto():
         'date_modified': fields.String(description='Date modified'),
 
     })
+    product_update_resp = product_ns.model('Expected response for finding by id', {
+        'product_name': fields.String(required=True, description='products Name'),
+        'inventory': fields.Integer(required=True, description='Products inventory'),
+        'min_quantity': fields.Integer(required=True, description='Minimum Inventory Quantity Allowed'),
+        'category': fields.String(required=True, description='Category of product'),
+
+
+    })
+
 
 
 class SalesDto():
@@ -42,7 +51,7 @@ class SalesDto():
         'cart': fields.List(cart_model),
         'posted_by': fields.String(required=True, description='The store attendant posting the sale'),
         'cart_total': fields.Integer(required=True, description='Total worth of goods bought'),
-        'date_created': fields.DateTime(descriprion='Date created'),
+        'date_created': fields.String(descriprion='Date created'),
     })
 
 

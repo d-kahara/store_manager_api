@@ -10,6 +10,7 @@ version2 = Blueprint('version2', __name__, url_prefix="/api/v2")
 
 from .endpoints.auth import api as auth_ns
 from .endpoints.products import api as products_ns
+from .endpoints.sales import api as sales_ns
 
 
 #Restplus configurations
@@ -27,3 +28,4 @@ api = Api(version2,
 
 api.add_namespace(auth_ns, path='/auth')
 api.add_namespace(products_ns, path='/products')
+api.add_namespace(sales_ns, path='/sales')

@@ -32,18 +32,18 @@ class ProductModel():
         Data.products.append(product)
 
     @staticmethod
-    def edit_product(product_id):
+    def edit_product(product_id, name, stock, category, min_q):
         """method to Edit Product details"""
  
         update_prd = [
             prod for prod in Data.products if prod['product_id'] == product_id]
  
         if update_prd:
-            # print(update_prd)
-            # update_prd[0]['name'] = name
-            # update_prd[0]['stock'] = stock
-            # update_prd[0]['category'] = category
-            # update_prd[0]['min_q'] = min_q  
+            print(update_prd)
+            update_prd[0]['name'] = name
+            update_prd[0]['stock'] = stock
+            update_prd[0]['category'] = category
+            update_prd[0]['min_q'] = min_q  
             return update_prd
         raise NotFound('Product Not Found')
 

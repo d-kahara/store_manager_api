@@ -93,7 +93,7 @@ class TestAuthBlueprint(BaseTestCase):
             )
         )
         data = json.loads(response.data.decode())
-        #self.assertTrue(data['message'] == 'Successfully logged out.')
+        self.assertTrue(data['message'] == 'Successfully logged out.')
         self.assertEqual(response.status_code, 200)
 
     def test_empty_password_registration(self):
