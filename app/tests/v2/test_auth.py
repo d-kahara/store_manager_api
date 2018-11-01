@@ -40,7 +40,11 @@ class TestAuthBlueprint(BaseTestCase):
 
     def test_user_registration(self):
         """Test that user can register successfully"""
+        data = self.create_admin_test_user()
+        admin_token=data['Authorization']
         user_reg = self.app.post(reg_endpoint,
+                                 headers=dict(
+                                     Authorization=admin_token),
                                  data=json.dumps(self.data),
                                  content_type='application/json')
         response = json.loads(user_reg.data.decode())
@@ -50,7 +54,11 @@ class TestAuthBlueprint(BaseTestCase):
 
     def test_registered_user_login(self):
         """ Test for login of registered-user  """
+        data = self.create_admin_test_user()
+        admin_token = data['Authorization']
         user_response = self.app.post(reg_endpoint,
+                                         headers=dict(
+                                     Authorization=admin_token),
                                       data=json.dumps(self.data),
                                       content_type='application/json')
         self.assertEqual(user_response.status_code, 201)
@@ -66,7 +74,11 @@ class TestAuthBlueprint(BaseTestCase):
     def test_valid_logout(self):
         """ Test for logout before token expires """
         # user registration
+        data = self.create_admin_test_user()
+        admin_token = data['Authorization']
         user_reg = self.app.post(reg_endpoint,
+                                 headers=dict(
+                                     Authorization=admin_token),
                                  data=json.dumps(self.data),
                                  content_type='application/json')
         response = json.loads(user_reg.data.decode())
@@ -91,13 +103,16 @@ class TestAuthBlueprint(BaseTestCase):
             )
         )
         data = json.loads(response.data.decode())
-        print(data)
-        # self.assertEqual(data['message'], 'Successfully logged out.')
-       # self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['message'], 'Successfully logged out.')
+        self.assertEqual(response.status_code, 200)
 
     def test_empty_password_registration(self):
         """Test registration without password"""
+        data = self.create_admin_test_user()
+        admin_token = data['Authorization']
         user_reg = self.app.post(reg_endpoint,
+                                 headers=dict(
+                                     Authorization=admin_token),
                                  data=json.dumps(self.data_no_pass),
                                  content_type='application/json')
         response = json.loads(user_reg.data.decode())
@@ -109,7 +124,11 @@ class TestAuthBlueprint(BaseTestCase):
     def test_existing_user(self):
         """Test that user cant register twice"""
         # user registration
+        data = self.create_admin_test_user()
+        admin_token = data['Authorization']
         user_reg = self.app.post(reg_endpoint,
+                                 headers=dict(
+                                     Authorization=admin_token),
                                  data=json.dumps(self.data),
                                  content_type='application/json')
         response = json.loads(user_reg.data.decode())
@@ -118,18 +137,23 @@ class TestAuthBlueprint(BaseTestCase):
         self.assertEqual(user_reg.status_code, 201)
 
         user_reg2 = self.app.post(reg_endpoint,
+                                  headers=dict(
+                                      Authorization=admin_token),
                                   data=json.dumps(self.data),
                                   content_type='application/json')
         response2 = json.loads(user_reg2.data.decode())
         self.assertEqual(user_reg2.status_code, 403)
         self.assertEqual(response2['message'],
-                         'User already exists.Please log in')
+                         'User already exists.Please log in to continue.')
 
     def test_invalid_login_password(self):
         """Test that user cant login with a wrong  password"""
-
         #Registration of user
+        data = self.create_admin_test_user()
+        admin_token = data['Authorization']
         user_reg = self.app.post(reg_endpoint,
+                                 headers=dict(
+                                     Authorization=admin_token),
                                  data=json.dumps(self.data),
                                  content_type='application/json')
         response = json.loads(user_reg.data.decode())
@@ -140,7 +164,6 @@ class TestAuthBlueprint(BaseTestCase):
         user_login = self.app.post(login_endpoint,
                                    data=json.dumps(self.data_wrong_pass),
                                    content_type='application/json')
-
         response = json.loads(user_login.data.decode())
         self.assertEqual(response['message'],
                          'Invalid login credentials.Please try again')
@@ -148,8 +171,12 @@ class TestAuthBlueprint(BaseTestCase):
 
     def test_login_blank_password(self):
         """Test that user cant login without password"""
+        data = self.create_admin_test_user()
+        admin_token = data['Authorization']
         #Resgistration
         user_reg = self.app.post(reg_endpoint,
+                                 headers=dict(
+                                     Authorization=admin_token),
                                  data=json.dumps(self.data),
                                  content_type='application/json')
         response = json.loads(user_reg.data.decode())
@@ -174,7 +201,11 @@ class TestAuthBlueprint(BaseTestCase):
 
     def test_invalid_email(self):
         """Test that user cant use invalid email"""
+        data = self.create_admin_test_user()
+        admin_token = data['Authorization']
         user_reg = self.app.post(reg_endpoint,
+                                 headers=dict(
+                                     Authorization=admin_token),
                                  data=json.dumps(self.data_bad_email),
                                  content_type='application/json')
         response = json.loads(user_reg.data.decode())

@@ -7,24 +7,33 @@ prod_endpoint = "api/v2/products"
 
 
 class TestProduct(BaseTestCase):
-    data={
-        "product_name": "balenciaga",
-        "min_quantity": 5,
+    data = {
+        "product_name": "wikO",
         "inventory": 10,
-        "category": "clothes",
+        "category": "phoNes",
+        "min_quantity": 0,
+        "price": 10000
+    }
+
+    category_data = {
+        "category_name":"phones"
     }
 
     def test_create_product(self):
+
         """Test for product creation endpoint."""
         data = self.create_admin_test_user()
         authentication_token = data['Authorization']
-
+        self.app.post("api/v2/categories",
+                      headers=dict(Authorization=authentication_token),
+                      data=json.dumps(self.category_data),
+                      content_type='application/json')
         res = self.app.post("api/v2/products",
-                            headers=dict(Authorization=authentication_token),
-                            data=json.dumps(self.data),
-                            content_type='application/json')
+                    headers=dict(Authorization=authentication_token),
+                    data=json.dumps(self.data),
+                    content_type='application/json')
         result = json.loads(res.data.decode())
-        self.assertEqual(result['message'], 'success')
+        self.assertEqual(result['message'], 'successfully created.')
         self.assertEqual(res.status_code, 201)
 
     def test_get_all_products(self):
