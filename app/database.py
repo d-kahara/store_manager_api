@@ -7,7 +7,7 @@ class SetupDB(object):
     def __init__(self, config_name):
         #create connection to db
         connection_string = app_config[config_name].DATABASE_URL
-        print(connection_string)
+        
         self.db_connection = psycopg2.connect(
             connection_string, sslmode='require')
 

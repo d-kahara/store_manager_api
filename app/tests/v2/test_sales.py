@@ -52,7 +52,7 @@ class Testsale(BaseTestCase):
 
     def test_get_all_sales(self):
         """Test for  get all sales endpoint."""
-        data = self.create_test_user()
+        data = self.create_admin_test_user()
         authentication_token = data['Authorization']
         self.app.post(sale_endpoint,
                       headers=dict(Authorization=authentication_token),
@@ -65,7 +65,7 @@ class Testsale(BaseTestCase):
 
     def test_empty_database(self):
         """Test sales database if empty."""
-        data = self.create_test_user()
+        data = self.create_admin_test_user()
         authentication_token = data['Authorization']
         res = self.app.get(sale_endpoint,
                            headers=dict(Authorization=authentication_token),

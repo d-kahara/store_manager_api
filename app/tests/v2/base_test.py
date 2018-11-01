@@ -97,8 +97,8 @@ class BaseTestCase(unittest.TestCase):
         return data
 
     def tearDown(self):
-        DATABASE_URI = app_config['testing'].DATABASE_URI
-        conn = psycopg2.connect(DATABASE_URI)
+        DATABASE_URL = app_config['testing'].DATABASE_URL
+        conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
         cursor.execute("DROP TABLE users, products, blacklist, sales")
         conn.commit()
