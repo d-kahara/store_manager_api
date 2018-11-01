@@ -7,14 +7,16 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    DATABASE_URI = os.getenv("DATABASE_URI")
+
+
+    DATABASE_URL = os.environ['DATABASE_URL']    
     DEBUG = True
 
 
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
-    DATABASE_URI = os.getenv("DATABASE_TEST_URI")
+    DATABASE_URL = os.getenv("DATABASE_TEST_URI")
     PRESERVE_CONTEXT_ON_EXCEPTION = True
 
 

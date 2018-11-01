@@ -6,18 +6,15 @@ from instance.config import app_config
 class SetupDB(object):
     def __init__(self, config_name):
         #create connection to db
-        connection_string = app_config[config_name].DATABASE_URI
-        # print(connection_string)
+        connection_string = app_config[config_name].DATABASE_URL
+        print(connection_string)
         self.db_connection = psycopg2.connect(
-            connection_string)
+            connection_string, sslmode='require')
 
         #create cursor for local development
-        # self.cursor = self.db_connection.cursor()
+        self.cursor = self.db_connection.cursor()
 
-        #create cursor for production on heroku
-        DATABASE_URL = os.environ['DATABASE_URL']
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        self.cursor = conn
+
 
     def create_tables(self):
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS users(
