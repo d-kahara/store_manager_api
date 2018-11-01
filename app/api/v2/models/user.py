@@ -58,7 +58,7 @@ class User():
         """return user from the db given an email"""
         curr = self.db.cursor()
         curr.execute(
-            "SELECT * FROM users WHERE email = (%s);", (email.lower(),))
+            "SELECT * FROM users WHERE email = (%s);", (email,))
         data = curr.fetchone()
         curr.close()
         return data

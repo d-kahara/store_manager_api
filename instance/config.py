@@ -22,6 +22,9 @@ class ProductionConfig(Config):
     DEBUG = False
 
 
+    
+
+
 app_config = dict(
     development=DevelopmentConfig,
     testing=TestingConfig,

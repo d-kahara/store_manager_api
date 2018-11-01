@@ -32,6 +32,13 @@ class Products(Resource):
         min_quantity = data['min_quantity']
         category = data['category']
         price = data['price']
+        if product_name == '':
+            resp=dict(
+                status='Failed.',
+                message='Product Name cannot be empty.'
+            )
+            return resp, 400
+
 
         product = Product(product_name, inventory,
                           min_quantity, category, price)

@@ -27,7 +27,7 @@ class Makesale(Resource):
         Add a product to sale
         """
         auth_token = None
-        current_user = None
+        current_user_email = None
         if 'Authorization' in request.headers:
                 auth_token = request.headers['Authorization']
         if not auth_token:
@@ -75,8 +75,8 @@ class GetSingleSale(Resource):
 @api.route('/')
 class AllSales(Resource):
     @api.response(200, 'Success')
-    @token_required
-    @api.marshal_with(sales_resp)
+    @admin_token_required
+    @api.marshal_with(sales_resp, envelope='sales')
     @api.doc(security='Auth_token')
     def get(self):
         """"Gets all products from db"""
