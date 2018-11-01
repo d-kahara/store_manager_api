@@ -18,6 +18,30 @@
 5. Admin can get all sale order records.
 6. Admin can add an attendant and assign admin privileges.
 
+
+### Database
+* Swith to postgres account (in terminal)
+    ```
+    sudo su - postgres
+    ```
+* Run PostgreSQL command line client.
+    ```
+    psql
+    ```
+* Create a database user with a password.
+    ```
+    CREATE USER store_owner with password 'password12345';
+    ```
+* Create a database instance.
+    ```
+    CREATE DATABASE store_manager owner store_owner encoding 'utf-8';
+    ```
+* Create the test database instance.
+    ```
+    CREATE DATABASE store_manager_test owner store_owner encoding 'utf-8';
+    ```
+
+
 ### Installing
 
 Create directory
@@ -25,16 +49,33 @@ Create directory
 
 ```$ cd store-manager```
 
+Clone the repository [```here```](https://github.com/d-kahara/store_manager_api) or 
+
+``` git clone https://github.com/d-kahara/store_manager_api ```
+
 Create and activate virtual environment
 
 ```$ virtualenv env -p python3```
 
 
-```$ source env/bin/activate```
+* Create a ```.env```  file in the root of the project folder and add the following
+    ```
+    export FLASK_APP="run.py"
+    export APP_SETTINGS="development"
+    export FLASK_SKIP_DOTENV=1  
+    source env/bin/activate
 
-Clone the repository [```here```](https://github.com/d-kahara/store_manager_api) or 
+    export DATABASE_TEST_URI='postgresql://store_owner:password12345@localhost:5432/store_manager_test'
 
-``` git clone https://github.com/d-kahara/store_manager_api ```
+    export DATABASE_URI='postgresql://store_owner:password12345@localhost:5432/store_manager'
+
+    ```
+* Run the following to add the above in the environment and activate virtual environment
+    ```
+    source .env
+    ```
+
+
 
 Install project dependencies 
 
@@ -43,36 +84,38 @@ Install project dependencies
 
 #### Running the application
 
-```$ python run.py run```
+```$ flask run```
 
 
 
 #### Testing
 
-```$  python run.py test```
+```$  python run.py test2```
 
 
 
 ### API-Endpoints
 
-#### Product Endpoints : /api/v1/
+#### Product Endpoints : /api/v2/
 
 Method | Endpoint | Functionality
 --- | --- | ---
 POST | /products | Post a product
 GET | /products | Get a List of all products
 GET | /products/int:product_id | Get a product using its id
+PUT | /products/int:product_id | Update Product Details
+Delete  | /products/int:product_id  | Delete a product record 
 
-#### Sales Endpoints : /api/v1
+#### Sales Endpoints : /api/v2
 Method | Endpoint | Functionality
 --- | --- | ---
 POST | /sales | Post a sale
 GET | /sales | Get a List of all sales
 GET | /sales/int:sale_id | Get a sale using its id
 
-#### Auth Endpoints : /api/v1
+#### Auth Endpoints : /api/v2
 Method | Endpoint | Functionality
 --- | --- | ---
 Regiser | /auth/register | Register a new user
 Login | /auth/login | Logs in a user and generates auth token
-Logout | /auth/logout | Logs out a user and destroys auth token
+Logout | /auth/logout | Logs out a user and blacklists auth token

@@ -1,17 +1,25 @@
 
-language: python	
+language: python
+
 python:	
  - "3.5"	
-cache: pip	
+
+cache: pip
 install:	
  - pip install -r requirements.txt
  - pip install coveralls
  - pip install codeclimate-test-reporter
 
+services:
+  - postgresql
+before_script:
+  - psql -c "CREATE USER test WITH PASSWORD 'test';" -U postgres
+  - psql -c 'CREATE DATABASE store_manager_test owner test;' -U postgres
+
 script:	
- 
  - pytest --cov-report term-missing --cov=app 
  - coveralls
+ 
 after_success:
  - coveralls
  - codeclimate-test-reporter
