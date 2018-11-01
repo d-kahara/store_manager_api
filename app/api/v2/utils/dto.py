@@ -10,6 +10,7 @@ class productDto():
         'inventory': fields.Integer(required=True, description='Products inventory'),
         'min_quantity': fields.Integer(required=True, description='Minimum Inventory Quantity Allowed'),
         'category': fields.String(required=True, description='Category of product'),
+        'price': fields.Integer(required=True, description='Price of each product'),
     })
 
     product_resp = product_ns.model('Expected response for finding by id', {
@@ -18,42 +19,19 @@ class productDto():
         'min_quantity': fields.Integer(description='Minimum Inventory Quantity Allowed'),
         'category': fields.String(description='Category of product'),
         'product_id': fields.Integer(description='Unique Identification for products'),
+        'price': fields.Integer(description='Price of each product'),
         'date_created': fields.String(description='Date created'),
         'date_modified': fields.String(description='Date modified'),
 
     })
     product_update_resp = product_ns.model('Expected response for finding by id', {
-        'product_name': fields.String(required=True, description='products Name'),
         'inventory': fields.Integer(required=True, description='Products inventory'),
         'min_quantity': fields.Integer(required=True, description='Minimum Inventory Quantity Allowed'),
         'category': fields.String(required=True, description='Category of product'),
-
-
-    })
-
-
-
-class SalesDto():
-    sales_ns = Namespace(
-        'Sales', description='Operations related to the Sales ')
-    cart_model = fields.String(description='Cart object')
-
-    sales_mod = sales_ns.model('sales model', {
-        'cart_id': fields.Integer(required=True, description='The cart where sale is being checked out from '),
-        'posted_by': fields.String(required=True, description='The store attendant posting the sale'),
-        'cart_total': fields.Integer(required=True, description='Total worth of goods bought'),
-        'cart': fields.List(cart_model),
+        'date_modified': fields.String(description='Date modified'),
+        'price': fields.Integer(description='Price of each product'),
 
     })
-    cart_model = fields.String(description='Cart object')
-    sales_resp = sales_ns.model('Expected response for get methods on sales', {
-        'sale_id': fields.Integer(description='Unique Identification for sales'),
-        'cart': fields.List(cart_model),
-        'posted_by': fields.String(required=True, description='The store attendant posting the sale'),
-        'cart_total': fields.Integer(required=True, description='Total worth of goods bought'),
-        'date_created': fields.String(descriprion='Date created'),
-    })
-
 
 class AuthDto:
     auth_ns = Namespace('auth', description="Auth related Operations")
@@ -67,4 +45,26 @@ class AuthDto:
         'email': fields.String(required=True, description='The email address'),
         'password': fields.String(required=True, description='The user password'),
 
+    })
+
+
+class SaleDto:
+    sale_ns = Namespace('Sales', description='Sale related Operations')
+    sale_model = sale_ns.model('Details required to add to cart', {
+        'quantity': fields.Integer(required=True, description='Quantity of Item'),
+    })
+    sales_resp = sale_ns.model('Expected response for finding by id', {
+        'product_name': fields.String(description='products Name'),
+        'quantity': fields.Integer(description='Number of products sold'),
+        'attendant_id': fields.Integer(description='Unique Identification for sales'),
+        'price': fields.Integer(description='Total Price of products'),
+        'created_at': fields.DateTime(dt_format='rfc822' ,description='Date product was created'),
+        'sale_id': fields.Integer(description='Uniquely Identifies sale')
+    })
+
+
+class CategoryDto:
+    category_ns= Namespace('Categories', description='Category related Operations')
+    category_model = category_ns.model('Details required to create a category', {
+        'category_name':fields.String(required=True, description='Name of the Category')
     })

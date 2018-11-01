@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource
 import json
-from werkzeug.exceptions import BadRequest, NotFound, Unauthorized, Forbidden
+from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 from werkzeug.security import check_password_hash
 from validate_email import validate_email
 
@@ -9,17 +9,18 @@ from ..utils.dto import AuthDto
 from ..models.user import User
 user_login = AuthDto.auth_login
 user_register = AuthDto.auth_register
+from ..utils.decorator import admin_token_required
 
 api = AuthDto.auth_ns
-
 
 @api.route('/register')
 class Register(Resource):
     """
     user registration resource
     """
+    @admin_token_required
     @api.response(201, 'User created successfully')
-    @api.doc('Register a new User')
+    @api.doc(security='Auth_token')
     @api.expect(user_register, validate=True)
     def post(self):
         """Register a new user user"""
@@ -34,7 +35,7 @@ class Register(Resource):
                 message='Password field must not be empty.',
                 status='Failed'
             )
-            return resp, 401
+            return resp, 403
 
         is_valid = validate_email(email)
         if not is_valid:
@@ -84,13 +85,13 @@ class Login(Resource):
         if not existing_user:
             raise Unauthorized('Your details were not found, please sign up')
 
-        if not check_password_hash(existing_user[1], login_info["password"]):
+        if not check_password_hash(existing_user[2], login_info["password"]):
             raise Unauthorized("Invalid login credentials.Please try again")
         try:
             if existing_user:
 
                 # Generate access token pass the user role and email as claims in the jwt payload
-                role = existing_user[0]
+                role = existing_user[3]
                 authentication_token = user.encode_jwt_token(email, role)
 
                 if authentication_token:
@@ -99,7 +100,6 @@ class Login(Resource):
                         message='Login successful',
                         Authorization=authentication_token.decode()
                     )
-                    #print(resp)
                     return resp, 200
             else:
                 resp = dict(
@@ -126,11 +126,10 @@ class Logout(Resource):
                 "No authorization header provided. This resource is secure.")
         
         response = User().decode_jwt_token(auth_token)
-        print(response)
         if isinstance(response, str):
             # token is either invalid or expired
             raise Unauthorized(
-                "Unaothorized.{}".format(response))
+                "Unauthorized.{}".format(response))
         else:
             # the token decoded succesfully
             # logout the user

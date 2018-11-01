@@ -27,14 +27,14 @@ class User():
         """Saves User Object to Database"""
 
         new_user = dict(
-            role=self.role,
-            email=self.email,
+            role=self.role.lower(),
+            email=self.email.lower(),
             password=self.password,
             registered_on=self.registered_on
         )
         # check if user exists
         if self.check_if_user_exists(new_user['email']):
-            raise Forbidden("User already exists.Please log in")
+            raise Forbidden("User already exists.Please log in to continue.")
 
         curr = self.db.cursor()
 
@@ -48,7 +48,7 @@ class User():
     def check_if_user_exists(self, email):
         database = self.db
         curr = database.cursor()
-        curr.execute("select * from users where email = (%s);", (email,))
+        curr.execute("select * from users where email = (%s);", (email.lower(),))
         result = curr.fetchone()
         if result:
             return True
@@ -58,7 +58,7 @@ class User():
         """return user from the db given an email"""
         curr = self.db.cursor()
         curr.execute(
-            "SELECT role, password, registered_on FROM users WHERE email = (%s);", (email,))
+            "SELECT * FROM users WHERE email = (%s);", (email.lower(),))
         data = curr.fetchone()
         curr.close()
         return data

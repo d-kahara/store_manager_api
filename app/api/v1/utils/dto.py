@@ -6,7 +6,7 @@ class productDto():
         'Products', description='Operations related to the Products ')
 
     product_mod = product_ns.model('product model', {
-        'name': fields.String(description='products Name'),
+        'name': fields.String(required=True,description='products Name'),
         'stock': fields.Integer( description='Products stock'),
         'min_q': fields.Integer( description='Minimum Inventory Quantity Allowed'),
         'category': fields.String(description='Category of product'),

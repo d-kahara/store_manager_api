@@ -8,6 +8,7 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth_token = None
+        current_user = None
         if 'Authorization' in request.headers:
                 auth_token = request.headers['Authorization']
         if not auth_token:
@@ -15,22 +16,18 @@ def token_required(f):
                 message='Token is missing.Please log in to continue.',
                 status='Failed.'
             )
-
             return response_object, 401
         try:
             current_user = User()
             data = current_user.decode_jwt_token(auth_token)
             if data:
-                pass
-
+                current_user=data['sub']
         except:
-
             response_object = dict(
                 message='Token is invalid.',
                 status='Failed.'
             )
             return response_object,  401
-
         return f(*args, **kwargs)
     return decorated
 
@@ -51,11 +48,12 @@ def admin_token_required(f):
         try:
             current_user = User()
             data = current_user.decode_jwt_token(auth_token)
-            if data['role'] == 'Admin':
+            
+            if data['role'] == 'admin':
                 pass
             else:
                 response = dict(
-                    message="Admin Token is required.",
+                    message="Operation reserved to admin users.",
                     status="Failed."
                 )
                 return response, 403

@@ -8,7 +8,6 @@ from app.database import SetupDB
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
-    app.app_context().push()
     app.url_map.strict_slashes = False
 
     #Create database connection and create tables
