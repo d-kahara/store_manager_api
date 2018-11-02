@@ -80,18 +80,19 @@ class Login(Resource):
 
         # Fetch user by email to check if user exists
         existing_user = user.get_user_by_email(email)
-
+        print(existing_user[0]['email'])
         #sql returns tuples
         if not existing_user:
+ 
             raise Unauthorized('Your details were not found, please sign up')
 
-        if not check_password_hash(existing_user[2], login_info["password"]):
+        if not check_password_hash(existing_user[0]['password'], login_info["password"]):
             raise Unauthorized("Invalid login credentials.Please try again")
         try:
             if existing_user:
 
                 # Generate access token pass the user role and email as claims in the jwt payload
-                role = existing_user[3]
+                role = existing_user[0]['role']
                 authentication_token = user.encode_jwt_token(email, role)
 
                 if authentication_token:

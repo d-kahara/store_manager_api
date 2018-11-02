@@ -1,13 +1,12 @@
-# Store Manager API
-
-## Introduction
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
-[![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=bg-test-refactor-%23161365564)](https://coveralls.io/github/d-kahara/store_manager_api?branch=bg-test-refactor-%23161365564)
+[![Coverage Status](https://coveralls.io/repos/github/d-kahara/store_manager_api/badge.svg?branch=bg-Tests-Travis-CRUD-fix-161645246)](https://coveralls.io/github/d-kahara/store_manager_api?branch=bg-Tests-Travis-CRUD-fix-161645246)
 [![Build Status](https://travis-ci.org/d-kahara/store_manager_api.svg?branch=bg-test-refactor-%23161365564)](https://travis-ci.org/d-kahara/store_manager_api)[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/d-kahara/store_manager_api)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/65dc0c9d43554d21843a56817fd02525)](https://www.codacy.com/app/d-kahara/store_manager_api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=d-kahara/store_manager_api&amp;utm_campaign=Badge_Grade)
 
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f20490b7d2ae6b24f453)
+
+# Store Manager API
 
 ### Features
 

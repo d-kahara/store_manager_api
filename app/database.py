@@ -49,7 +49,7 @@ class SetupDB(object):
                 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS sales(
                 sale_id         SERIAL PRIMARY KEY,
-                attendant_id    INTEGER  NOT NULL references users(user_id),
+                user_id    INTEGER  NOT NULL references users(user_id),
                 product_name    VARCHAR(100)  NOT NULL references products(product_name),
                 price           INTEGER DEFAULT 0,
                 quantity        INTEGER DEFAULT 0,

@@ -16,6 +16,8 @@ before_script:
   - psql -c "CREATE USER store_owner WITH PASSWORD 'password12345';" 
   - psql -c 'CREATE DATABASE store_manager_test owner store_owner;' 
   
+env:
+  - DATABASE_TEST_URI='postgresql://store_owner:password12345@localhost:5432/store_manager' 
 
 script:	
  - pytest --cov-report term-missing --cov=app 

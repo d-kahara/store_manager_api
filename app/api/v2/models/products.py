@@ -1,5 +1,5 @@
 from datetime import datetime
-from werkzeug.exceptions import  NotFound, Forbidden
+from werkzeug.exceptions import NotFound, Forbidden
 import psycopg2.extras as extras
 from psycopg2 import Error
 import psycopg2
@@ -32,14 +32,15 @@ class Product():
             date_created=self.date_created,
             date_modified=self.date_modified,
             price=self.price
-            ) 
+        )
 
         # check if product exists
         if self.check_if_product_exists(new_product['product_name'].lower()):
-            raise Forbidden("product already exists.You may Edit or Delete this product")
+            raise Forbidden(
+                "product already exists.You may Edit or Delete this product")
 
         curr = self.db.cursor()
-        category_name=self.category
+        category_name = self.category
         curr.execute(
             "select * from categories where category_name = (%s);", (category_name.lower(),))
         category = curr.fetchone()
@@ -75,14 +76,14 @@ class Product():
         dbconn = self.db
         curr = dbconn.cursor(cursor_factory=extras.DictCursor)
         curr.execute("""SELECT * FROM products;""")
-        #returns a python dictionary like interface 
+        #returns a python dictionary like interface
         rows = curr.fetchall()
         resp = []
 
         for row in rows:
             resp.append(dict(row))
         return resp
-        
+
     def get_single_product(self, product_id):
         """return single product from the db given an product_id"""
         # check if product exists
@@ -99,8 +100,8 @@ class Product():
         for row in rows:
             resp.append(dict(row))
         return resp
-    
-    def update_product(self, inventory,min_quantity,price,product_id):
+
+    def update_product(self, inventory, min_quantity, price, product_id):
         """update the field of an item given the item_id"""
         dbconn = self.db
         curr = dbconn.cursor(cursor_factory=extras.DictCursor)
@@ -110,13 +111,12 @@ class Product():
             raise Forbidden(
                 "Product  does not exist.")
 
-
         try:
             date_modified = datetime.now().replace(second=0, microsecond=0)
 
             curr.execute("UPDATE products SET inventory= %s, min_quantity= %s,date_modified = %s, price=%s WHERE product_id = %s RETURNING product_name,category, inventory ,min_quantity,date_modified, price",
                          (inventory, min_quantity, date_modified, price, product_id,))
-          
+
             rows = curr.fetchall()
             curr.close()
             dbconn.commit()
@@ -125,9 +125,9 @@ class Product():
             for row in rows:
                 resp.append(dict(row))
             return resp
-            
+
         except (Exception, psycopg2.DatabaseError) as error:
-            response= dict(
+            response = dict(
                 status="Failed.",
                 Message=error
             )

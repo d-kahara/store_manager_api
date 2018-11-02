@@ -47,6 +47,15 @@ class AuthDto:
 
     })
 
+class UserDto:
+    user_ns = Namespace('users', description="User related Operations")
+    user_model = user_ns.model('User\'s details', {
+        'user_id' : fields.Integer(description='Unique identifier for each user'),
+        'email': fields.String(description='User email'),
+        'role': fields.String(required=True,description='User role.Can either be admin or attendant.'),
+        'registered_on': fields.String(description='Date user was registered.')
+    })
+
 
 class SaleDto:
     sale_ns = Namespace('Sales', description='Sale related Operations')
@@ -56,7 +65,7 @@ class SaleDto:
     sales_resp = sale_ns.model('Expected response for finding by id', {
         'product_name': fields.String(description='products Name'),
         'quantity': fields.Integer(description='Number of products sold'),
-        'attendant_id': fields.Integer(description='Unique Identification for sales'),
+        'user_id': fields.Integer(description='Unique Identification for sales'),
         'price': fields.Integer(description='Total Price of products'),
         'created_at': fields.DateTime(dt_format='rfc822' ,description='Date product was created'),
         'sale_id': fields.Integer(description='Uniquely Identifies sale')

@@ -96,6 +96,7 @@ class OneProduct(Resource):
         product = Product()
         existing_prd = Product().get_single_product(product_id)
         print(existing_prd[0]['inventory'])
+        
         data = json.loads(request.data.decode().replace("'", '"'))
         
         inventory = existing_prd[0]['inventory']

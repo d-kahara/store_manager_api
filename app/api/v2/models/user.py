@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import BadRequest, NotFound, Unauthorized, Forbidden
 
 from flask import current_app
+import psycopg2.extras as extras
+import psycopg2
 
 # Local Imports
 from ..utils.db_helper import init_db
@@ -56,12 +58,17 @@ class User():
 
     def get_user_by_email(self, email):
         """return user from the db given an email"""
-        curr = self.db.cursor()
+        if self.check_if_user_exists(email) == False:
+            raise NotFound('User does not Exist.')
+        curr = self.db.cursor(cursor_factory=extras.DictCursor)
         curr.execute(
             "SELECT * FROM users WHERE email = (%s);", (email,))
-        data = curr.fetchone()
-        curr.close()
-        return data
+        rows = curr.fetchall()
+        resp = []
+
+        for row in rows:
+            resp.append(dict(row))
+        return resp
 
     def encode_jwt_token(self, email, role):
         """method to generate access token"""
@@ -111,3 +118,44 @@ class User():
         conn.commit()
         curr.close()
         return bad_token
+
+    def update_role(self,role,email):
+            """update the role given the user's email"""
+            dbconn = self.db
+            curr = dbconn.cursor(cursor_factory=extras.DictCursor)
+
+            # check if product exists
+            if not self.check_if_user_exists(email):
+                raise Forbidden(
+                    "User  does not exist.")
+            try:
+                curr.execute("UPDATE users SET role= %s WHERE email = %s RETURNING user_id,role,email",
+                            (role,email,))
+                rows = curr.fetchall()
+                curr.close()
+                dbconn.commit()
+                resp = []
+
+                for row in rows:
+                    resp.append(dict(row))
+                return resp
+                
+            except (Exception, psycopg2.DatabaseError) as error:
+                response= dict(
+                    status="Failed.",
+                    Message=error
+                )
+                return response
+
+    def get_all(self):
+        """This function returns a list of all the users"""
+        dbconn = self.db
+        curr = dbconn.cursor(cursor_factory=extras.DictCursor)
+        curr.execute("""SELECT user_id, role, email, registered_on FROM users;""")
+        #returns a python dictionary like interface
+        rows = curr.fetchall()
+        resp = []
+
+        for row in rows:
+            resp.append(dict(row))
+        return resp

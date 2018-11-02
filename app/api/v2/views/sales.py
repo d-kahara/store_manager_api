@@ -22,7 +22,6 @@ class Makesale(Resource):
     @api.doc(security='Auth_token')
     @api.expect(model, validate=True)
     def post(self, product_id):
-
         """
         Add a product to sale
         """
@@ -49,14 +48,15 @@ class Makesale(Resource):
             )
         attendant = User()
         attendant = attendant.get_user_by_email(current_user_email)
-        attendant_id = attendant[0]
+        user_id = attendant[0]['user_id']
+        print(user_id)
 
         data = json.loads(request.data.decode().replace("'", '"'))
         quantity = data['quantity']
         new_sale = Sale()
-        
-        return new_sale.make_sale(product_id,quantity,attendant_id)
-        
+
+        return new_sale.make_sale(product_id, quantity, user_id)
+
 
 @api.route('/<int:sale_id>')
 class GetSingleSale(Resource):

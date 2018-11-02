@@ -12,6 +12,7 @@ from .views.auth import api as auth_ns
 from .views.products import api as products_ns
 from .views.sales import api as sales_ns
 from .views.category import api as category_ns
+from .views.users import api as user_ns
 
 
 #Restplus configurations
@@ -28,6 +29,7 @@ api = Api(version2,
           authorizations=authorizations)
 
 api.add_namespace(auth_ns, path='/auth')
+api.add_namespace(user_ns, path='/users')
 api.add_namespace(products_ns, path='/products')
-api.add_namespace(sales_ns, path='/sales')
 api.add_namespace(category_ns, path='/categories')
+api.add_namespace(sales_ns, path='/sales')
