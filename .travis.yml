@@ -15,7 +15,7 @@ services:
 before_script:
   - psql -c "CREATE USER store_owner WITH PASSWORD 'password12345';" 
   - psql -c 'CREATE DATABASE store_manager_test owner store_owner;' 
-    - psql -c 'CREATE DATABASE store_manager owner store_owner;' 
+  - psql -c 'CREATE DATABASE store_manager owner store_owner;' 
 
   
 env:
