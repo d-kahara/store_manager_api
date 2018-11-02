@@ -197,7 +197,7 @@ class TestAuthBlueprint(BaseTestCase):
         login_response = self.app.post(login_endpoint,
                                        data=json.dumps(self.data),
                                        content_type='application/json')
-        self.assertEqual(login_response.status_code, 401)
+        self.assertEqual(login_response.status_code, 404)
 
     def test_invalid_email(self):
         """Test that user cant use invalid email"""

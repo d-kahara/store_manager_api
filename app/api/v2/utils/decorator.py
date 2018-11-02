@@ -19,16 +19,6 @@ def token_required(f):
             )
             return response_object, 401
         try:
-
-            dbconn = init_db()
-            print(dbconn)
-            curr = dbconn.cursor()
-            curr.execute(
-                "select * from blacklist where tokens = (%s);", (auth_token,))
-            bad_token = curr.fetchone()
-            if bad_token:
-                raise Unauthorized('Token is Blacklisted.Try logging in again.')
- 
             current_user = User()
             data = current_user.decode_jwt_token(auth_token)
             if data:
@@ -57,16 +47,6 @@ def admin_token_required(f):
 
             return response_object, 401
         try:
-            dbconn = init_db()
-            curr = dbconn.cursor()
-            curr.execute(
-                "select * from blacklist where tokens = (%s);", (auth_token,))
-            bad_token = curr.fetchone()[0]
-            print(bad_token)
-            if bad_token:
-                print('baad')
-                raise Unauthorized('Token is Blacklisted.Try logging in again.')
-
             current_user = User()
             data = current_user.decode_jwt_token(auth_token)
             
