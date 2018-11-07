@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import request
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, Forbidden
+import psycopg2
 
 from ..models.user import User
 from .db_helper import init_db
@@ -49,7 +50,6 @@ def admin_token_required(f):
         try:
             current_user = User()
             data = current_user.decode_jwt_token(auth_token)
-            
             if data['role'] == 'admin':
                 pass
             else:

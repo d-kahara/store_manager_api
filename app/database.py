@@ -22,7 +22,7 @@ class SetupDB(object):
                 email           VARCHAR(50) UNIQUE NOT NULL,
                 password        VARCHAR(100) UNIQUE NOT NULL,
                 role            VARCHAR(50) NOT NULL,
-                registered_on   VARCHAR(100) NOT NULL
+                registered_on   TIMESTAMP NOT NULL
         );''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS blacklist(
@@ -41,16 +41,16 @@ class SetupDB(object):
                 price                INTEGER DEFAULT 0,
                 min_quantity         INTEGER DEFAULT 0,
                 category             VARCHAR(20) NOT NULL,
-                date_created         VARCHAR(50) NOT NULL,
-                date_modified        VARCHAR(50) NOT NULL,
-                product_name         VARCHAR(50) UNIQUE NOT NULL
+                date_created         TIMESTAMP NOT NULL,
+                date_modified        TIMESTAMP NOT NULL,
+                product_name         VARCHAR(50) UNIQUE NOT NULL 
 
                 );''')
                 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS sales(
                 sale_id         SERIAL PRIMARY KEY,
                 user_id    INTEGER  NOT NULL references users(user_id),
-                product_name    VARCHAR(100)  NOT NULL references products(product_name),
+                product_name    VARCHAR(100)  NOT NULL references products(product_name) ON DELETE CASCADE,
                 price           INTEGER DEFAULT 0,
                 quantity        INTEGER DEFAULT 0,
                 created_at      TIMESTAMP NOT NULL

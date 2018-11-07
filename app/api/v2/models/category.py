@@ -14,7 +14,6 @@ class Category:
         curr.execute(
             "select * from categories where category_name = (%s);", (category_name.lower(),))
         category = curr.fetchone()
-
         if category:
             raise Forbidden('Category already exists')
         sql = """

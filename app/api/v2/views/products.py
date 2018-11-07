@@ -59,20 +59,17 @@ class Products(Resource):
 
         return resp, 201
             
-
-
     
     @api.response(200, 'Success')
     @api.doc(security='Auth_token')
     @token_required
+    @api.marshal_list_with(prod_resp, envelope='products')
     def get(self):
         """"Gets all products from db"""
         products = Product().get_all()
-        resp = {
-            "message": "success",
-            "Products": products
-        }
-        return resp, 200
+        
+     
+        return products
 
 @api.route('/<int:product_id>')
 class OneProduct(Resource):
@@ -95,7 +92,6 @@ class OneProduct(Resource):
         """Updates product details"""
         product = Product()
         existing_prd = Product().get_single_product(product_id)
-        print(existing_prd[0]['inventory'])
         
         data = json.loads(request.data.decode().replace("'", '"'))
         

@@ -21,7 +21,7 @@ class User():
 
         User.password = generate_password_hash(password)
         self.email = email
-        self.registered_on = datetime.now()
+        self.registered_on = datetime.now().replace(second=0, microsecond=0)
         self.role = role
         self.db = init_db()
 

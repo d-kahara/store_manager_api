@@ -36,7 +36,10 @@ class Register(Resource):
                 status='Failed'
             )
             return resp, 403
-
+        role = data['role'].lower()
+        if role != 'attendant':
+            if role != 'admin':
+                raise BadRequest('Role can only be admin or attendant.')
         is_valid = validate_email(email)
         if not is_valid:
             resp = dict(
@@ -51,7 +54,6 @@ class Register(Resource):
         resp = dict(message="Successfully registered. You can now log in",
                     email=email,
                     )
-
         return resp, 201
 
 
@@ -80,7 +82,6 @@ class Login(Resource):
 
         # Fetch user by email to check if user exists
         existing_user = user.get_user_by_email(email)
-        print(existing_user[0]['email'])
         #sql returns tuples
         if not existing_user:
  
@@ -99,6 +100,7 @@ class Login(Resource):
                     resp = dict(
                         status='success',
                         message='Login successful',
+                        role=role,
                         Authorization=authentication_token.decode()
                     )
                     return resp, 200
