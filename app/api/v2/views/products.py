@@ -88,6 +88,7 @@ class OneProduct(Resource):
     @api.doc(security='Auth_token')
     @admin_token_required
     @api.expect(prod_update_resp, validate=False)
+    @api.marshal_with(prod_resp)
     def put(self,product_id):
         """Updates product details"""
         product = Product()
@@ -107,11 +108,8 @@ class OneProduct(Resource):
 
         updated_product = product.update_product(
                 inventory, min_quantity, price, product_id)
-        resp = {
-            "message": "success",
-            "Updated_product": updated_product
-        }
-        return resp, 200
+
+        return updated_product
 
 
         
