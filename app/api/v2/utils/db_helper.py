@@ -3,7 +3,7 @@ import psycopg2
 
 from instance.config import app_config
 
-environment = os.environ['APP_SETTINGS']
+environment = os.environ['FLASK_ENV']
 DATABASE_URL = app_config[environment].DATABASE_URL
 
 

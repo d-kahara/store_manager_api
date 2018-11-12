@@ -6,23 +6,24 @@ from flask import request
 from werkzeug.exceptions import NotFound, BadRequest
 
 #local imports
-from ..utils.dto import SaleDto
-api = SaleDto.Sale_ns
-model = SaleDto().sales_resp
+from ..utils.dto import CartDto
+from ..models.products import Product
+api = CartDto.Cart_ns
+model = CartDto().Cart_model
+Carts_resp = CartDto.Carts_resp
 
 from ..models.carts import Cart
-from ..models.sales import Sale
-
 from ..utils.decorator import token_required, admin_token_required
 from ..models.user import User
 
 
-@api.route('/')
-class CreateSale(Resource):
+@api.route('/<int:product_id>')
+class PostCart(Resource):
     @api.doc(security='Auth_token')
-    def post(self):
+    @api.expect(model, validate=True)
+    def post(self, product_id):
         """
-        Create Sale Order
+        Add a product to Cart
         """
         auth_token = None
         current_user_email = None
@@ -39,36 +40,41 @@ class CreateSale(Resource):
             data = current_user.decode_jwt_token(auth_token)
             if data:
                 current_user_email = data['sub']
+
         except:
             response_object = dict(
                 message='Token is invalid.',
                 status='Failed.'
             )
-        new_sale = Sale()
-        return new_sale.checkout(current_user_email)
+
+        data = json.loads(request.data.decode().replace("'", '"'))
+        quantity = data['quantity']
+        new_cart = Cart()
+
+        return new_cart.post_cart(product_id, quantity, current_user_email)
 
 
 @api.route('/<string:email>')
 class GetSingleCart(Resource):
     @api.doc(security='Auth_token')
     @token_required
-    @api.marshal_with(model, envelope='sales')
+    @api.marshal_with(Carts_resp, envelope='Cart_record')
     def get(self, email):
-        """Gets a single Sale given user Email"""
+        """Gets a single Cart given a user's email"""
 
-        sale = Sale()
-        data = sale.get_single_sale(email)
+        cart = Cart()
+        data = cart.get_single_cart(email)
 
         return data
 
 
 @api.route('/')
-class AllSales(Resource):
+class AllCarts(Resource):
     @api.response(200, 'Success')
     @admin_token_required
-    @api.marshal_with(model, envelope='sales')
+    @api.marshal_with(Carts_resp, envelope='Carts')
     @api.doc(security='Auth_token')
     def get(self):
-        """"Gets all sales from db"""
-        sales = Sale().get_all()
-        return sales, 200
+        """"Gets all products from db"""
+        Carts = Cart().get_all()
+        return Carts, 200

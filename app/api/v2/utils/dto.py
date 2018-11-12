@@ -62,20 +62,31 @@ class UserDto:
         'role': fields.String(required=True, description='User role.Can either be admin or attendant.'),
     })
 
-class SaleDto:
-    sale_ns = Namespace('Sales', description='Sale related Operations')
-    sale_model = sale_ns.model('Details required to create sale order', {
+class CartDto:
+    Cart_ns = Namespace('Carts', description='Cart related Operations')
+    Cart_model = Cart_ns.model('Details required to create Cart order', {
         'quantity': fields.Integer(required=True, description='Quantity of Item'),
     })
-    sales_resp = sale_ns.model('Expected response for finding by id', {
+    Carts_resp = Cart_ns.model('Expected response for finding by id', {
         'product_name': fields.String(description='products Name'),
         'quantity': fields.Integer(description='Number of products sold'),
-        'user_id': fields.Integer(description='Unique Identification for sales'),
         'price': fields.Integer(description='Total Price of products'),
-        'created_at': fields.DateTime(dt_format='rfc822', description='Date Sale was posted'),
-        'sale_id': fields.Integer(description='Uniquely Identifies sale')
+        'created_at': fields.DateTime(dt_format='rfc822', description='Date Cart was posted'),
+        'email': fields.String(description='Uniquely Identifies Cart')
     })
 
+
+class SaleDto:
+    Sale_ns = Namespace('Sales', description='Sale related Operations')
+    products_array = fields.String(description='Products Array')
+
+    sales_resp = Sale_ns.model('Expected response for finding by id', {
+        'product_names': fields.List(products_array),
+        'products_count': fields.Integer(description='Number of products sold'),
+        'cart_total': fields.Integer(description='Total Price of products'),
+        'created_at': fields.DateTime(dt_format='rfc822', description='Date Cart was posted'),
+        'email': fields.String(description='Uniquely Identifies Cart creator')
+    })
 
 class CategoryDto:
     category_ns = Namespace(

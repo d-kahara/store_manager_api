@@ -24,10 +24,7 @@ class Users(Resource):
     def get(self):
         """Gets all users from db"""
         users = User().get_all()
-        # resp = {
-        #     "message": "success",
-        #     "users": users
-        # }
+
         return users
 
 

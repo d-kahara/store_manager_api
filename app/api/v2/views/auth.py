@@ -18,7 +18,7 @@ class Register(Resource):
     """
     user registration resource
     """
-    @admin_token_required
+    # @admin_token_required
     @api.response(201, 'User created successfully')
     @api.doc(security='Auth_token')
     @api.expect(user_register, validate=True)

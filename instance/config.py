@@ -16,7 +16,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
-    DATABASE_URL = os.getenv("DATABASE_TEST_URI")
+    DATABASE_URL = os.environ['DATABASE_TEST_URI']
     PRESERVE_CONTEXT_ON_EXCEPTION = True
 
 

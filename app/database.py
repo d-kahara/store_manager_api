@@ -22,14 +22,10 @@ class SetupDB(object):
                 email           VARCHAR(50) UNIQUE NOT NULL,
                 password        VARCHAR(100) UNIQUE NOT NULL,
                 role            VARCHAR(50) NOT NULL,
-                registered_on   TIMESTAMP NOT NULL
+                registered_on   TIMESTAMP WITH TIME ZONE NOT NULL 
         );''')
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS blacklist(
-                tokens           VARCHAR(500) UNIQUE NOT NULL
-
-        );''')
-
+ 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS categories(
 
                 category_name      VARCHAR(200)   UNIQUE NOT NULL
@@ -41,19 +37,28 @@ class SetupDB(object):
                 price                INTEGER DEFAULT 0,
                 min_quantity         INTEGER DEFAULT 0,
                 category             VARCHAR(20) NOT NULL,
-                date_created         TIMESTAMP NOT NULL,
-                date_modified        TIMESTAMP NOT NULL,
+                date_created         TIMESTAMP WITH TIME ZONE NOT NULL ,
+                date_modified        TIMESTAMP WITH TIME ZONE NOT NULL ,
                 product_name         VARCHAR(50) UNIQUE NOT NULL 
 
                 );''')
                 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS sales(
-                sale_id         SERIAL PRIMARY KEY,
-                user_id    INTEGER  NOT NULL references users(user_id),
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS carts(
+                cart_id         SERIAL PRIMARY KEY,
+                email    VARCHAR(50)  NOT NULL references users(email),
                 product_name    VARCHAR(100)  NOT NULL references products(product_name) ON DELETE CASCADE,
                 price           INTEGER DEFAULT 0,
                 quantity        INTEGER DEFAULT 0,
-                created_at      TIMESTAMP NOT NULL
+                created_at      TIMESTAMP WITH TIME ZONE NOT NULL 
+        );''')
+
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS sales(
+                sale_id         SERIAL PRIMARY KEY,
+                email    VARCHAR(50)  NOT NULL references users(email),
+                product_names    TEXT ARRAY,
+                cart_total           INTEGER DEFAULT 0,
+                products_count      INTEGER DEFAULT 0,
+                created_at      TIMESTAMP WITH TIME ZONE NOT NULL 
         );''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS blacklist(

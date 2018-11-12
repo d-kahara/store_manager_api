@@ -12,10 +12,10 @@ def create_app(config_name):
     app.url_map.strict_slashes = False
     CORS(app)
 
-    @app.errorhandler(Exception)
+    app.errorhandler(Exception)
     def unhandled_exception(e):
         return jsonify({"message": "Server error. Contact the admin",
-                        "status": 500})
+                        "status": 'Failed.'})
 
     #Create database connection and create tables
     db = SetupDB(config_name)

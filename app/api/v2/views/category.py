@@ -18,3 +18,12 @@ class CreateCategory(Resource):
         new_category = Category()
         return new_category.add_category(category_name)
 
+    @api.response(200, 'Success')
+    @api.doc(security='Auth_token')
+    
+    @api.marshal_list_with(model, envelope='categories')
+    def get(self):
+        """"Gets all categories from db"""
+        categories = Category().get_all()
+
+        return categories

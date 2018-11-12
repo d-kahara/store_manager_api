@@ -114,7 +114,7 @@ class Product():
         try:
             date_modified = datetime.now().replace(second=0, microsecond=0)
 
-            curr.execute("UPDATE products SET inventory= %s, min_quantity= %s,date_modified = %s, price=%s WHERE product_id = %s RETURNING product_name,category, inventory ,min_quantity,date_modified, price",
+            curr.execute("UPDATE products SET inventory= %s, min_quantity= %s,date_modified = %s, price=%s WHERE product_id = %s RETURNING product_id, product_name,category, inventory ,min_quantity,date_modified,date_created, price",
                          (inventory, min_quantity, date_modified, price, product_id,))
 
             rows = curr.fetchall()
