@@ -64,6 +64,10 @@ class TestProduct(BaseTestCase):
         """Test for get product by id endpoint."""
         data = self.create_admin_test_user()
         authentication_token = data['Authorization']
+        self.app.post("api/v2/categories",
+                      headers=dict(Authorization=authentication_token),
+                      data=json.dumps(self.category_data),
+                      content_type='application/json')
         self.app.post(prod_endpoint,
                       headers=dict(Authorization=authentication_token),
                       data=json.dumps(self.data),

@@ -60,7 +60,7 @@ Create and activate virtual environment
 * Create a ```.env```  file in the root of the project folder and add the following
     ```
     export FLASK_APP="run.py"
-    export APP_SETTINGS="development"
+    export FLASK_ENV="development"
     export FLASK_SKIP_DOTENV=1  
     source env/bin/activate
 
@@ -105,12 +105,27 @@ GET | /products/int:product_id | Get a product using its id
 PUT | /products/int:product_id | Update Product Details
 Delete  | /products/int:product_id  | Delete a product record 
 
+#### Categories Endpoints : /api/v2
+Method | Endpoint | Functionality
+--- | --- | ---
+POST | /categories | Create a new Category
+GET | /categories | Get a List of all categories
+
 #### Sales Endpoints : /api/v2
 Method | Endpoint | Functionality
 --- | --- | ---
-POST | /sales | Post a sale
+POST | /sales | Checkout a sale
 GET | /sales | Get a List of all sales
 GET | /sales/int:sale_id | Get a sale using its id
+GET | /sales/string:email | Get a sale using user's email
+
+#### Cart Endpoints : /api/v2
+Method | Endpoint | Functionality
+--- | --- | ---
+POST | /carts | Add a product to cart
+GET | /carts | Get a List of all carts
+GET | /carts/string:email | Get a cart using user's email
+
 
 #### Auth Endpoints : /api/v2
 Method | Endpoint | Functionality

@@ -54,6 +54,7 @@ class BaseTestCase(unittest.TestCase):
         sql = """INSERT INTO users (role,email, registered_on, password) \
             VALUES ( %(role)s, %(email)s, %(registered_on)s, %(password)s);
             """
+        
         curr.execute(sql, new_user)
         self.db.commit()
         curr.close()
@@ -100,6 +101,13 @@ class BaseTestCase(unittest.TestCase):
         DATABASE_URL = app_config['testing'].DATABASE_URL
         conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("DROP TABLE users, products, blacklist, sales")
+        cursor.execute("DROP TABLE users cascade;")
+        cursor.execute("DROP TABLE categories cascade;")
+        cursor.execute("DROP TABLE sales cascade;")        
+        cursor.execute("DROP TABLE products cascade;")        
+        cursor.execute("DROP TABLE blacklist cascade;")        
+        cursor.execute("DROP TABLE carts cascade;")        
+
+
         conn.commit()
         conn.close()

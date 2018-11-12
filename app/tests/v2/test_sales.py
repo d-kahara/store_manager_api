@@ -42,13 +42,19 @@ class Testsale(BaseTestCase):
 
         data = self.create_test_user()
         authentication_token = data['Authorization']
-        res = self.app.post("api/v2/sales/{}".format(1),
+        res = self.app.post("api/v2/carts/{}".format(1),
                             headers=dict(Authorization=authentication_token),
                             data=json.dumps(self.data),
                             content_type='application/json')
         result = json.loads(res.data.decode())
-        self.assertEqual(result['message'], 'Sale made successfully.')
+        self.assertEqual(result['message'], 'cart posted successfully.')
         self.assertEqual(res.status_code, 201)
+        res = self.app.post("api/v2/sales/",
+                            headers=dict(Authorization=authentication_token),
+                            content_type='application/json')
+        result = json.loads(res.data.decode())
+        self.assertEqual(result['Message'], 'Sale Order created.')
+        self.assertEqual(res.status_code, 200)
 
     def test_get_all_sales(self):
         """Test for  get all sales endpoint."""
@@ -72,7 +78,7 @@ class Testsale(BaseTestCase):
                            )
         self.assertEqual(res.status_code, 200)
 
-    def test_get_sale_by_id(self):
+    def test_get_sale_by_email(self):
         """Test for get sale by id endpoint."""
         #To test we need to create a category, then product then get the product
         data = self.create_admin_test_user()
@@ -88,18 +94,21 @@ class Testsale(BaseTestCase):
         result = json.loads(res.data.decode())
         self.assertEqual(result['message'], 'successfully created.')
         self.assertEqual(res.status_code, 201)
-
-        data = self.create_test_user()
-        authentication_token = data['Authorization']
-        res = self.app.post("api/v2/sales/{}".format(1),
+        res = self.app.post("api/v2/carts/{}".format(1),
                             headers=dict(Authorization=authentication_token),
                             data=json.dumps(self.data),
                             content_type='application/json')
         result = json.loads(res.data.decode())
-        self.assertEqual(result['message'], 'Sale made successfully.')
+        self.assertEqual(result['message'], 'cart posted successfully.')
         self.assertEqual(res.status_code, 201)
+        res = self.app.post("api/v2/sales/",
+                            headers=dict(Authorization=authentication_token),
+                            content_type='application/json')
+        result = json.loads(res.data.decode())
+        self.assertEqual(result['Message'], 'Sale Order created.')
+        self.assertEqual(res.status_code, 200)
         #Now retrieve the product
-        res = self.app.get("/api/v2/sales/{}".format(1),
+        res = self.app.get("/api/v2/sales/{}".format('admin@gmail.com'),
                            headers=dict(Authorization=authentication_token),
                            )
         self.assertEqual(res.status_code, 200)

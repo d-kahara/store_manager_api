@@ -19,7 +19,7 @@ before_script:
 
   
 env:
-  - DATABASE_TEST_URI='postgresql://store_owner:password12345@localhost:5432/store_manager' 
+  - DATABASE_TEST_URI='postgresql://store_owner:password12345@localhost:5432/store_manager_test' 
 
 script:	
  - pytest --cov-report term-missing --cov=app 
